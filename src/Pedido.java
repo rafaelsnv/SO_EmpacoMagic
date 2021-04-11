@@ -1,3 +1,7 @@
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+
 public class Pedido {
    private String cliente;
    private int totalProdutos;
@@ -6,7 +10,7 @@ public class Pedido {
    public Pedido (String qualCliente, int qualTotal, int qualPrazo){
       this.cliente = qualCliente;
       this.totalProdutos = qualTotal;
-      this.prazo  = qualPrazo;
+      this.prazo  = qualPrazo*60;
    }
 
    public void setCliente(String cliente) {
@@ -38,6 +42,6 @@ public class Pedido {
       return "Pedido" +
               "\nCliente: '" + cliente +
               "\nNúmero total de produtos: " + totalProdutos +
-              "\nPrazo: " + prazo;
+              "\nPrazo: " + (prazo/60) + " minutos";
    }
 }
