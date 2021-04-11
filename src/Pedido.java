@@ -1,15 +1,17 @@
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-
 public class Pedido {
    private String cliente;
    private int totalProdutos;
    private int prazo;
 
-   public Pedido (String qualCliente, int qualTotal, int qualPrazo){
+   /**
+    * Método Construtor
+    * @param qualCliente O nome do cliente
+    * @param quantoTotal A quantidade total de produtos
+    * @param qualPrazo O prazo para entrega do pedido
+    */
+   public Pedido (String qualCliente, int quantoTotal, int qualPrazo){
       this.cliente = qualCliente;
-      this.totalProdutos = qualTotal;
+      this.totalProdutos = quantoTotal;
       this.prazo  = qualPrazo*60;
    }
 
@@ -37,6 +39,10 @@ public class Pedido {
       return totalProdutos;
    }
 
+   /**
+    * Método conversor para impressão
+    * @return Uma string com os valores armazenados no objeto
+    */
    @Override
    public String toString() {
       return "Pedido" +

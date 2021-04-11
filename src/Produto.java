@@ -2,6 +2,11 @@ public class Produto {
    private String tipo;
    private double volume;
 
+   /**
+    * Método Construtor
+    * @param qualTipo O tipo de produto
+    * @param qualVolume O volume do produto
+    */
    public Produto (String qualTipo, double qualVolume){
       this.tipo = qualTipo;
       this.volume = qualVolume;
@@ -23,6 +28,10 @@ public class Produto {
       return tipo;
    }
 
+   /**
+    * Método conversor para impressão
+    * @return Uma string com os valores armazenados no objeto
+    */
    @Override
    public String toString() {
       return "Produto"+
