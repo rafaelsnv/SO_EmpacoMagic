@@ -79,7 +79,7 @@ public class Horario {
    /**
     * Método de comparação entre dois horários
     * @param horario Objeto da classe Horario.
-    * @return (double) Diferença em segundos.
+    * @return (double) Diferença em segundos. Positivo se objeto for maior que o parâmetro.
     */
    public double compareTo(Horario horario) {
       return this.toSeconds() - horario.toSeconds();
@@ -88,7 +88,7 @@ public class Horario {
    /**
     * Método de comparação com horário em segundos
     * @param seconds (double) Horário em segundos. Zero (0) segundos representa meia-noite, 00h.
-    * @return (double) Diferença em segundos;
+    * @return (double) Diferença em segundos. Positivo se objeto for maior que o parâmetro.
     */
    public double compareTo(double seconds) {
       return this.toSeconds() - seconds;
