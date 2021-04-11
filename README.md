@@ -1,3 +1,4 @@
-# EmpacoMagic
-![alt text](Modelagens/empacotadeira.png)
-
+<p align="center">
+  <img src=Modelagens/empacotadeira.png>
+  <img src=gif.gif>
+</p>
