@@ -82,7 +82,7 @@ public class Horario {
     * @return (double) Diferença em segundos.
     */
    public double compareTo(Horario horario) {
-      return this.toSeconds() - horario.toSeconds();
+      return horario.toSeconds() - this.toSeconds();
    }
 
    /**
@@ -91,7 +91,7 @@ public class Horario {
     * @return (double) Diferença em segundos;
     */
    public double compareTo(double seconds) {
-      return this.toSeconds() - seconds;
+      return seconds - this.toSeconds();
    }
 
    /**
