@@ -7,10 +7,10 @@ import java.util.NoSuchElementException;
  */
 public class Heap {
 
-   private ArrayList<Series> itens;
+   private ArrayList<Pedido> itens;
 
    public Heap() {
-      itens = new ArrayList<Series>();
+      itens = new ArrayList<>();
    }
 
    /**
@@ -20,8 +20,8 @@ public class Heap {
       int k = itens.size() - 1;
       while (k > 0) {
          int p = (k - 1) / 2;
-         Series item = itens.get(k);
-         Series pai = itens.get(p);
+         Pedido item = itens.get(k);
+         Pedido pai = itens.get(p);
          if (compare(item, pai) < 0) {
             itens.set(k, pai);
             itens.set(p, item);
@@ -33,7 +33,7 @@ public class Heap {
       }
    }
 
-   public void insere(Series item) {
+   public void insere(Pedido item) {
       itens.add(item);
       siftUp();
    }
@@ -54,7 +54,7 @@ public class Heap {
             }
          }
          if (compare(itens.get(k), itens.get(max)) > 0) {
-            Series aux = itens.get(k);
+            Pedido aux = itens.get(k);
             itens.set(k, itens.get(max));
             itens.set(max, aux);
             k = max;
@@ -69,14 +69,14 @@ public class Heap {
    /**
     * Retorna sempre o primeiro item da Heap já o excluindo da árvore
     */
-   public Series retorno() throws NoSuchElementException {
+   public Pedido retorno() throws NoSuchElementException {
       if (itens.size() == 0) {
          throw new NoSuchElementException();
       }
       if (itens.size() == 1) {
          return itens.remove(0);
       }
-      Series hold = itens.get(0);
+      Pedido hold = itens.get(0);
 
       itens.set(0, itens.remove(itens.size() - 1));
 
@@ -86,7 +86,7 @@ public class Heap {
 
    }
 
-   private int compare(Series item, Series item2) {
+   private int compare(Pedido item, Pedido item2) {
       String aux = item.data.substring(6);
       aux = aux.concat(item.data.substring(3, 5));
       aux = aux.concat(item.data.substring(0, 2));

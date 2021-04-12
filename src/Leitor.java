@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
 
 public class Leitor {
    private File dadosEmpacota;
@@ -15,10 +14,10 @@ public class Leitor {
 		
 		for (String linha; (linha = br.readLine()) != null;) { 							                              // Cada linha é lida, transformada em pedido e adicionada na Heap
 			if (!linha.equals("")) {                                                                              // Se a linha estiver vazia, é ignorada
-            divisao = linha.split(";");                                                                        
+            divisao = linha.split(";");
             if (divisao.length == 3){                                                                          // Se a linha não estiver no padrão de 3 categorias separadas por ";", ela é ignorada
                aux = new Pedido(divisao[0], Integer.parseInt(divisao[1]), Integer.parseInt(divisao[2]));       // Inicializa o auxiliar de Pedidos com os itens da linha
-               pedidos.add(aux);                                                                               // Adiciona o pedido na Heap
+               pedidos.insere(aux);                                                                               // Adiciona o pedido na Heap
             }
 			}
 		}

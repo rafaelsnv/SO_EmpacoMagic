@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import Heap.java;
 
 
 public class Esteira {
@@ -7,8 +6,8 @@ public class Esteira {
    private static int PACOTE = 250; 
    private static double TEMPO_ROLAMENTO = 0.5;
    private static double TEMPO_EMPACOTAMENTO = 5.0;
-   private static Relogio HORA_INICIO = new Relogio(28800);
-   private static Relogio HORA_FINAL = new Relogio(61200);
+   private static Horario HORA_INICIO = new Horario(28800);
+   private static Horario HORA_FINAL = new Horario(61200);
    private ArrayList tempoMedio = new ArrayList();
    
    public Esteira() {
@@ -29,7 +28,7 @@ public class Esteira {
     * @param fim     Hora do fim do empacotamento.
     * @return        Retorna a quantidade possível de pacotes produzidos no intervalo de tempo.
     */
-   public int getQntPacotesParcial(Relogio inicio, Relogio fim) {
+   public int getQntPacotesParcial(Horario inicio, Horario fim) {
       return 0;
    }
 
@@ -37,18 +36,18 @@ public class Esteira {
       Heap Heap = new Heap();
       boolean esteiraLivre = false;
       int cargaAtual = 0;
-      int aux;
+      Pedido aux;
 
       /**
        * Loop para preenchimento da esteira com capacidade de até 5000cm³ 
        */
       do {
-         
+         aux = Heap.retorno();            // TOTAL DE PRODUTOS
+
          if (cargaAtual<CAPACIDADE) {
-            aux = Heap.retorno();            // TOTAL DE PRODUTOS 
-            cargaAtual += aux;               // AUTOSOMA DO TOTAL DE PRODUTOS
+            cargaAtual += aux.getTotalProdutos();               // AUTOSOMA DO TOTAL DE PRODUTOS
          }else{
-            cargaAtual -= aux;               // REMOVE A QNT DO ULTIMO PEDIDO, CASO A ESTEIRA NÃO SUPORTE MAIS
+            cargaAtual -= aux.getTotalProdutos();               // REMOVE A QNT DO ULTIMO PEDIDO, CASO A ESTEIRA NÃO SUPORTE MAIS
             Heap.insere(aux);                // RETORNA O PEDIDO PARA A HEAP
             esteiraLivre = true;             // FECHA A PRODUÇÃO DA ESTEIRA
          }
