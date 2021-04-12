@@ -6,14 +6,10 @@ import java.util.NoSuchElementException;
  * principal
  */
 public class HeapPrazo {
+   private ArrayList<HeapQtd> itens;
 
-   private ArrayList<Pedido> itens;
-
-   /**
-    * Método Construtor
-    */
    public HeapPrazo() {
-      itens = new ArrayList<Pedido>();
+      itens = new ArrayList<HeapQtd>();
    }
 
    /**
@@ -24,33 +20,42 @@ public class HeapPrazo {
       int indexNovoItem = itens.size() - 1; // variável recebe o índice do novo item inserido da heap
       while (indexNovoItem > 0) {
          int indexPai = (indexNovoItem - 1) / 2; // variável recebe o índice do nó pai do novo item
-         Pedido item = itens.get(indexNovoItem);
-         Pedido pai = itens.get(indexPai);
+         HeapQtd item = itens.get(indexNovoItem);
+         HeapQtd pai = itens.get(indexPai);
          if (compare(item, pai) < 0) { // se novo item for menor que o pai, trocam de lugar
             itens.set(indexNovoItem, pai);
             itens.set(indexPai, item);
 
             indexNovoItem = indexPai;
          }
-         if (compare(item,pai)==0){
-            if (HeapQtd != null){
-               HeapQtd.insere;
+
+         if (compare(item, pai) == 0) {
+            int tamanho = item.size();
+            while (tamanho > 0) {
+               pai.insere(item.retorno());
+               if (item.size() == 0)
+                  itens.remove(item);
+               tamanho--;
             }
-            else{
-               new HeapQtd();
-               HeapQtd.insere;
-            }
+            indexNovoItem = 0;
          }
 
          else {
             break;
          }
       }
+
    }
 
-   public void insere(Pedido item) {
-      itens.add(item);
+   public void insereNovo(Pedido item) {
+      HeapQtd pedidosQtd = new HeapQtd(item.getPrazo());
+      pedidosQtd.insere(item);
+      itens.add(pedidosQtd);
       siftUp();
+   }
+
+   public void insere() {
+
    }
 
    /**
@@ -70,7 +75,7 @@ public class HeapPrazo {
             }
          }
          if (compare(itens.get(indexPai), itens.get(max)) > 0) {
-            Pedido aux = itens.get(indexPai);
+            HeapQtd aux = itens.get(indexPai);
             itens.set(indexPai, itens.get(max));
             itens.set(max, aux);
             indexPai = max;
@@ -85,14 +90,14 @@ public class HeapPrazo {
    /**
     * Retorna sempre o primeiro item da Heap já o excluindo da árvore
     */
-   public Pedido retorno() throws NoSuchElementException {
+   public HeapQtd retorno() throws NoSuchElementException {
       if (itens.size() == 0) {
          throw new NoSuchElementException();
       }
       if (itens.size() == 1) {
          return itens.remove(0);
       }
-      Pedido hold = itens.get(0);
+      HeapQtd hold = itens.get(0);
 
       itens.set(0, itens.remove(itens.size() - 1));
 
@@ -109,7 +114,7 @@ public class HeapPrazo {
     * @param item2
     * @return
     */
-   private int compare(Pedido item, Pedido item2) {
+   private int compare(HeapQtd item, HeapQtd item2) {
       int aux = item.getPrazo();
       int aux2 = item2.getPrazo();
 
