@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import Heap.java;
+
 
 public class Esteira {
    private static int CAPACIDADE = 5000;
@@ -29,5 +31,31 @@ public class Esteira {
     */
    public int getQntPacotesParcial(Relogio inicio, Relogio fim) {
       return 0;
+   }
+
+   public void empacotarPedidos(){
+      Heap Heap = new Heap();
+      boolean esteiraLivre = false;
+      int cargaAtual = 0;
+      int aux;
+
+      /**
+       * Loop para preenchimento da esteira com capacidade de até 5000cm³ 
+       */
+      do {
+         
+         if (cargaAtual<CAPACIDADE) {
+            aux = Heap.retorno();            // TOTAL DE PRODUTOS 
+            cargaAtual += aux;               // AUTOSOMA DO TOTAL DE PRODUTOS
+         }else{
+            cargaAtual -= aux;               // REMOVE A QNT DO ULTIMO PEDIDO, CASO A ESTEIRA NÃO SUPORTE MAIS
+            Heap.insere(aux);                // RETORNA O PEDIDO PARA A HEAP
+            esteiraLivre = true;             // FECHA A PRODUÇÃO DA ESTEIRA
+         }
+
+      } while (esteiraLivre == false);       // FIM DO LOOP DE PREENCHIMENTO
+
+      double qtdDePacote = cargaAtual/PACOTE;                        // QNT DE PACOTE QUE A ESTEIRA IRA PRODUZIR
+      double tempoEmpacotando = qtdDePacote * TEMPO_EMPACOTAMENTO;   // TEMPO GASTO PARA EMPACOTAR OS PRODUTOS (Em segundos)
    }
 }

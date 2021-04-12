@@ -5,11 +5,11 @@ import java.util.NoSuchElementException;
  * Estrutura HeapMin Ordena os dados de forma em que o menor fica sempre como nó
  * principal
  */
-public class HeapMinSeries {
+public class Heap {
 
    private ArrayList<Series> itens;
 
-   public HeapMinSeries() {
+   public Heap() {
       itens = new ArrayList<Series>();
    }
 
