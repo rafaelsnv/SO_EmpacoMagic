@@ -22,12 +22,12 @@ public class Esteira {
    }
 
    /**
-    * 
+    * O método serve para retornar a quantidade de pacotes possíveis de serem produzidos no intervalo de tempo inserido.
     * @param inicio  Hora de inicio do empacotamento
     * @param fim     Hora do fim do empacotamento
-    * @return        Retorna a quantidade de pacotes produzidas.
+    * @return        Retorna a quantidade possível de pacotes produzidos no intervalo de tempo
     */
    public int getQntPacotesParcial(Relogio inicio, Relogio fim) {
-      int 0;
+      return 0;
    }
 }
