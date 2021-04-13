@@ -6,7 +6,7 @@ public class App {
       Scanner ler = new Scanner(System.in);
 
       HeapPrazo pedidosPrazo = new HeapPrazo(); // Heap vazia para a inserção dos pedidos
-      HeapQtd pedidosQtd = new HeapQtd(0); // Heap vazia para inserção dos pedidos
+      HeapQtd pedidosQtd = new HeapQtd(); // Heap vazia para inserção dos pedidos
 
       Pedido aux; // Auxiliar Pedido. Vai ser subscrito conforme cada linha for lida
       String[] divisao; // Vetor de strings com cada categoria do .txt

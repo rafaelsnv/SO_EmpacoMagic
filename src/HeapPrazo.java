@@ -29,7 +29,7 @@ public class HeapPrazo {
             indexNovoItem = indexPai;
          }
 
-         if (compare(item, pai) == 0) {
+         if ((compare(item, pai) == 0) || (compare(item, item - 1) == 0)) {
             int tamanho = item.size();
             while (tamanho > 0) {
                pai.insere(item.retorno());
@@ -48,14 +48,11 @@ public class HeapPrazo {
    }
 
    public void insereNovo(Pedido item) {
-      HeapQtd pedidosQtd = new HeapQtd(item.getPrazo());
+      HeapQtd pedidosQtd = new HeapQtd();
+      pedidosQtd.setPrazo(item.getPrazo());
       pedidosQtd.insere(item);
       itens.add(pedidosQtd);
       siftUp();
-   }
-
-   public void insere() {
-
    }
 
    /**
