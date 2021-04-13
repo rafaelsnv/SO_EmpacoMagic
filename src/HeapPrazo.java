@@ -18,33 +18,52 @@ public class HeapPrazo {
     */
    private void siftUp() {
       int indexNovoItem = itens.size() - 1; // variável recebe o índice do novo item inserido da heap
+      boolean par; // variável utilizada para saber se o novo item tem irmão
+      int indexIrmao = 0;
+
       while (indexNovoItem > 0) {
+         par = false;
+         if ((indexNovoItem % 2) == 0) { // se o index do novo item for par, significa que ele tem irmão
+            par = true;
+            indexIrmao = indexNovoItem - 1;
+         }
          int indexPai = (indexNovoItem - 1) / 2; // variável recebe o índice do nó pai do novo item
          HeapQtd item = itens.get(indexNovoItem);
          HeapQtd pai = itens.get(indexPai);
+
+         if (par == true) {
+            HeapQtd irmao = itens.get(indexIrmao);
+
+            if (compare(item, irmao) < 0) { // Se item < irmão trocam de lugar
+               itens.set(indexNovoItem, irmao);
+               itens.set(indexIrmao, item);
+               indexNovoItem = indexIrmao;
+            } else if (compare(item, irmao) == 0) { // Se item == irmão
+               for (int tamanho = item.size(); tamanho > 0; tamanho--) {
+                  irmao.insere(item.retorno()); // item é inserido na HeapQtd irmão já existente
+                  if (item.size() == 0) { // quando já tiverem sido passados todos os pedidos de item
+                     itens.remove(item); // item é removido
+                     indexNovoItem = indexIrmao;
+                  }
+               }
+            }
+         }
+
          if (compare(item, pai) < 0) { // se novo item for menor que o pai, trocam de lugar
             itens.set(indexNovoItem, pai);
             itens.set(indexPai, item);
-
             indexNovoItem = indexPai;
-         }
-
-         if ((compare(item, pai) == 0) || (compare(item, item - 1) == 0)) {
-            int tamanho = item.size();
-            while (tamanho > 0) {
+         } else if (compare(item, pai) == 0) {
+            for (int tamanho = item.size(); tamanho > 0; tamanho--) {
                pai.insere(item.retorno());
-               if (item.size() == 0)
+               if (item.size() == 0) {
                   itens.remove(item);
-               tamanho--;
+                  indexNovoItem = indexPai;
+               }
             }
+         } else
             indexNovoItem = 0;
-         }
-
-         else {
-            break;
-         }
       }
-
    }
 
    public void insereNovo(Pedido item) {

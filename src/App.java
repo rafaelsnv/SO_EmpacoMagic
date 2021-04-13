@@ -11,7 +11,7 @@ public class App {
       Pedido aux; // Auxiliar Pedido. Vai ser subscrito conforme cada linha for lida
       String[] divisao; // Vetor de strings com cada categoria do .txt
       String linha;
-      int fim = 4;
+      int fim = 10;
       while (fim != 0) {
          System.out.println("insira uma linha");
          linha = ler.nextLine();
@@ -27,7 +27,12 @@ public class App {
          fim--;
       }
 
-      System.out.println("Prazo size final: " + pedidosPrazo.size());
-      System.out.println("Qtd size final: " + pedidosQtd.size());
+      for (int i = pedidosPrazo.size(); i > 0; i--) {
+         HeapQtd teste = pedidosPrazo.retorno();
+         for (int j = teste.size(); j > 0; j--) {
+            Pedido pedi = teste.retorno();
+            System.out.println(pedi.getCliente() + " " + pedi.getTotalProdutos() + " " + pedi.getPrazo());
+         }
+      }
    }
 }
