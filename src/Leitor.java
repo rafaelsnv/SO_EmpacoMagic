@@ -6,16 +6,11 @@ public class Leitor {
    public Leitor() {
    }
 
-   public void lerArquivo(String nomeArquivo, HeapPrazo pedidosPrazo, HeapQtd pedidosQtd) throws IOException { // O
-                                                                                                               // método
-                                                                                                               // lê
-                                                                                                               // cada
-                                                                                                               // linha
-                                                                                                               // do
-                                                                                                               // .txt,
-                                                                                                               // transforma
-                                                                                                               // em
-      // pedido e retorna uma Heap de pedidos
+   public void lerArquivo(String nomeArquivo, HeapPrazo pedidosPrazo, HeapQtd pedidosQtd) throws IOException { /* O método
+                                                                                            lê cada linha do .txt,
+                                                                                            transforma em pedido
+                                                                                            e retorna uma Heap de pedidos*/
+
       dadosEmpacota = new File(nomeArquivo); // Colocar nos atributos o nome do arquivo de texto + '.txt'. Deve estar na
                                              // pasta mãe.
 
@@ -43,5 +38,4 @@ public class Leitor {
          }
       }
    }
-
 }
