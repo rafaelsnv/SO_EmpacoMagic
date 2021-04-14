@@ -9,6 +9,7 @@ public class Esteira {
    private static Horario HORA_INICIO = new Horario(28800);
    private static Horario HORA_FINAL = new Horario(61200);
    private ArrayList tempoMedio = new ArrayList();
+   private double tempoDeProducao;
    
    public Esteira() {
 
@@ -28,12 +29,23 @@ public class Esteira {
     * @param fim     Hora do fim do empacotamento.
     * @return        Retorna a quantidade possível de pacotes produzidos no intervalo de tempo.
     */
-   public int getQntPacotesParcial(Horario inicio, Horario fim) {
+   public int qntPacotesParcial(Horario inicio, Horario fim) {
+      //double qntPacotesParcial = 0;
+      do {
+         
+         // Chama o metodo de empacotar 
+         // calcula a quantidade de pacotes produzidos
+         // soma TEMPO_ROLAMENTO
+         // Acrescenta os segundos
+         // recursividade passando o novo Horario de inicio
+ 
+
+      } while (false);
       return 0;
    }
 
-   public void empacotarPedidos(){
-      Heap Heap = new Heap();
+   public double empacotarPedido(Horario inicio, Horario fim){
+      HeapQtd Heap = new HeapQtd();
       boolean esteiraLivre = false;
       int cargaAtual = 0;
       Pedido aux;
@@ -42,19 +54,21 @@ public class Esteira {
        * Loop para preenchimento da esteira com capacidade de até 5000cm³ 
        */
       do {
-         aux = Heap.retorno();            // TOTAL DE PRODUTOS
+         aux = Heap.retorno();            // Total de Produtos
 
          if (cargaAtual<CAPACIDADE) {
-            cargaAtual += aux.getTotalProdutos();               // AUTOSOMA DO TOTAL DE PRODUTOS
+            cargaAtual += aux.getTotalProdutos();               // Autosoma do total de Produtos
          }else{
-            cargaAtual -= aux.getTotalProdutos();               // REMOVE A QNT DO ULTIMO PEDIDO, CASO A ESTEIRA NÃO SUPORTE MAIS
-            Heap.insere(aux);                // RETORNA O PEDIDO PARA A HEAP
-            esteiraLivre = true;             // FECHA A PRODUÇÃO DA ESTEIRA
+            cargaAtual -= aux.getTotalProdutos();               // Remove a qnt do último pedido, caso a esteira não suporte mais
+            Heap.insere(aux);                // Retorna o pedido para a heap
+            esteiraLivre = true;             // Fecha a produção da esteira
          }
 
-      } while (esteiraLivre == false);       // FIM DO LOOP DE PREENCHIMENTO
+      } while (esteiraLivre == false);       // Fim do loop de preenchimento
 
-      double qtdDePacote = cargaAtual/PACOTE;                        // QNT DE PACOTE QUE A ESTEIRA IRA PRODUZIR
-      double tempoEmpacotando = qtdDePacote * TEMPO_EMPACOTAMENTO;   // TEMPO GASTO PARA EMPACOTAR OS PRODUTOS (Em segundos)
+      double qtdDePacote = cargaAtual/PACOTE;     // Qnt de pacote que a esteira irá produzir
+      return qtdDePacote * TEMPO_EMPACOTAMENTO;   // Retorna o Tempo gasto para EMPACOTAR o máxixmo da esteira (Em segundos)
    }
+
+   
 }
