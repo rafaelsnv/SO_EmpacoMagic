@@ -6,14 +6,10 @@ import java.util.NoSuchElementException;
  * principal
  */
 public class HeapPrazo {
+   private ArrayList<HeapQtd> itens;
 
-   private ArrayList<Pedido> itens;
-
-   /**
-    * Método Construtor
-    */
    public HeapPrazo() {
-      itens = new ArrayList<Pedido>();
+      itens = new ArrayList<HeapQtd>();
    }
 
    /**
@@ -22,34 +18,59 @@ public class HeapPrazo {
     */
    private void siftUp() {
       int indexNovoItem = itens.size() - 1; // variável recebe o índice do novo item inserido da heap
+      boolean par; // variável utilizada para saber se o novo item tem irmão
+      int indexIrmao = 0;
+
       while (indexNovoItem > 0) {
+         par = false;
+         if ((indexNovoItem % 2) == 0) { // se o index do novo item for par, significa que ele tem irmão
+            par = true;
+            indexIrmao = indexNovoItem - 1;
+         }
          int indexPai = (indexNovoItem - 1) / 2; // variável recebe o índice do nó pai do novo item
-         Pedido item = itens.get(indexNovoItem);
-         Pedido pai = itens.get(indexPai);
+         HeapQtd item = itens.get(indexNovoItem);
+         HeapQtd pai = itens.get(indexPai);
+
+         if (par == true) {
+            HeapQtd irmao = itens.get(indexIrmao);
+
+            if (compare(item, irmao) < 0) { // Se item < irmão trocam de lugar
+               itens.set(indexNovoItem, irmao);
+               itens.set(indexIrmao, item);
+               indexNovoItem = indexIrmao;
+            } else if (compare(item, irmao) == 0) { // Se item == irmão
+               for (int tamanho = item.size(); tamanho > 0; tamanho--) {
+                  irmao.insere(item.retorno()); // item é inserido na HeapQtd irmão já existente
+                  if (item.size() == 0) { // quando já tiverem sido passados todos os pedidos de item
+                     itens.remove(item); // item é removido
+                     indexNovoItem = indexIrmao;
+                  }
+               }
+            }
+         }
+
          if (compare(item, pai) < 0) { // se novo item for menor que o pai, trocam de lugar
             itens.set(indexNovoItem, pai);
             itens.set(indexPai, item);
-
             indexNovoItem = indexPai;
-         }
-         if (compare(item,pai)==0){
-            if (HeapQtd != null){
-               HeapQtd.insere;
+         } else if (compare(item, pai) == 0) {
+            for (int tamanho = item.size(); tamanho > 0; tamanho--) {
+               pai.insere(item.retorno());
+               if (item.size() == 0) {
+                  itens.remove(item);
+                  indexNovoItem = indexPai;
+               }
             }
-            else{
-               new HeapQtd();
-               HeapQtd.insere;
-            }
-         }
-
-         else {
-            break;
-         }
+         } else
+            indexNovoItem = 0;
       }
    }
 
-   public void insere(Pedido item) {
-      itens.add(item);
+   public void insereNovo(Pedido item) {
+      HeapQtd pedidosQtd = new HeapQtd();
+      pedidosQtd.setPrazo(item.getPrazo());
+      pedidosQtd.insere(item);
+      itens.add(pedidosQtd);
       siftUp();
    }
 
@@ -70,7 +91,7 @@ public class HeapPrazo {
             }
          }
          if (compare(itens.get(indexPai), itens.get(max)) > 0) {
-            Pedido aux = itens.get(indexPai);
+            HeapQtd aux = itens.get(indexPai);
             itens.set(indexPai, itens.get(max));
             itens.set(max, aux);
             indexPai = max;
@@ -85,14 +106,14 @@ public class HeapPrazo {
    /**
     * Retorna sempre o primeiro item da Heap já o excluindo da árvore
     */
-   public Pedido retorno() throws NoSuchElementException {
+   public HeapQtd retorno() throws NoSuchElementException {
       if (itens.size() == 0) {
          throw new NoSuchElementException();
       }
       if (itens.size() == 1) {
          return itens.remove(0);
       }
-      Pedido hold = itens.get(0);
+      HeapQtd hold = itens.get(0);
 
       itens.set(0, itens.remove(itens.size() - 1));
 
@@ -109,7 +130,7 @@ public class HeapPrazo {
     * @param item2
     * @return
     */
-   private int compare(Pedido item, Pedido item2) {
+   private int compare(HeapQtd item, HeapQtd item2) {
       int aux = item.getPrazo();
       int aux2 = item2.getPrazo();
 

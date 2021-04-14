@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -7,15 +6,17 @@ import java.util.NoSuchElementException;
  * principal
  */
 public class HeapQtd {
-
+    private int prazo;
     private ArrayList<Pedido> itens;
 
-    /**
-     * Método Construtor
-     */
     public HeapQtd() {
         itens = new ArrayList<Pedido>();
     }
+
+    // public HeapQtd(int prazoHeap) {
+    // int prazo = prazoHeap;
+    // itens = new ArrayList<Pedido>();
+    // }
 
     /**
      * SiftUp Estrutura usada na inserção da heap, tem a função de manter os dados
@@ -110,5 +111,17 @@ public class HeapQtd {
 
     public int size() {
         return itens.size();
+    }
+
+    public Pedido getPedido(int index) {
+        return itens.get(index);
+    }
+
+    public int getPrazo() {
+        return prazo;
+    }
+
+    public void setPrazo(int novoPrazo) {
+        prazo = novoPrazo;
     }
 }
