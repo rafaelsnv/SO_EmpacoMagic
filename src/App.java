@@ -19,6 +19,11 @@ public class App {
             System.out.println(pedi.getCliente() + " " + pedi.getTotalProdutos() + " " + pedi.getPrazo());
          }
       }
+
+      for (int i = pedidosQtd.size(); i > 0; i--) {
+         Pedido testeQtd = pedidosQtd.retorno();
+         System.out.println(testeQtd.getCliente() + " " + testeQtd.getTotalProdutos() + " " + testeQtd.getPrazo());
+      }
       ler.close();
 
    }
