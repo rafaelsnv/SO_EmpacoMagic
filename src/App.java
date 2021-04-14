@@ -6,6 +6,17 @@ public class App {
 
       Scanner ler = new Scanner(System.in);
 
+      Horario inicio = new Horario(2888);           // 8:00
+      Horario fim = new Horario(43200);            // 12:00
+      Horario fimExpediente = new Horario(61200); // 17:00
+
+      Esteira esteira1 = new Esteira();
+
+      esteira1.qntPacotesParcial(inicio,fim);
+
+      HeapPrazo pedidosPrazo = new HeapPrazo(); // Heap vazia para a inserção dos pedidos
+      HeapQtd pedidosQtd = new HeapQtd(); // Heap vazia para inserção dos pedidos
+
       HeapPrazo pedidosPrazo = new HeapPrazo(); // Heap vazia para a inserção dos pedidos
       HeapQtd pedidosQtd = new HeapQtd();      // Heap vazia para inserção dos pedidos
 
