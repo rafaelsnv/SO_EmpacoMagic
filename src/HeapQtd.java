@@ -13,10 +13,10 @@ public class HeapQtd {
         itens = new ArrayList<Pedido>();
     }
 
-    // public HeapQtd(int prazoHeap) {
-    // int prazo = prazoHeap;
-    // itens = new ArrayList<Pedido>();
-    // }
+    /* public HeapQtd(int prazoHeap) {
+       int prazo = prazoHeap;
+       itens = new ArrayList<Pedido>();
+       }*/
 
     /**
      * SiftUp Estrutura usada na inserção da heap, tem a função de manter os dados
