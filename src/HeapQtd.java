@@ -72,11 +72,11 @@ public class HeapQtd {
                 break;
             }
         }
-
     }
 
     /**
      * Retorna sempre o primeiro item da Heap já o excluindo da árvore
+     * @return primeiro item da Heap já o excluindo da árvore
      */
     public Pedido retorno() throws NoSuchElementException {
         if (itens.size() == 0) {
@@ -108,6 +108,10 @@ public class HeapQtd {
         return aux - aux2;
     }
 
+    /**
+     * Método para obter tamanho da heap
+     * @return O número de nós da heap
+     */
     public int size() {
         return itens.size();
     }

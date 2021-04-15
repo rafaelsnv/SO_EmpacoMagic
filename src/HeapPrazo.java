@@ -136,6 +136,10 @@ public class HeapPrazo {
       return aux - aux2;
    }
 
+   /**
+    * Método para obter tamanho da heap
+    * @return O número de nós da heap
+    */
    public int size() {
       return itens.size();
    }

@@ -17,12 +17,9 @@ public class Esteira {
    public double getTempoMedio() {
       return 0.0;
    }
-
-
    /**
     * O método serve para retornar a quantidade de pacotes possíveis de serem
     * produzidos no intervalo de tempo inserido.
-
     * @param pedidosPrazo
     * @param pedidosQtd
     * @return Retorna a quantidade total de pacotes
