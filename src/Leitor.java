@@ -25,11 +25,12 @@ public class Leitor {
             divisao = linha.split(";");
             if (divisao.length == 3) { // Se a linha não estiver no padrão de 3 categorias separadas por ";", ela é
                                        // ignorada
-               aux = new Pedido(divisao[0], Integer.parseInt(divisao[1]), Integer.parseInt(divisao[2])); // Inicializa o
-                                                                                                         // auxiliar de
-                                                                                                         // Pedidos com
-                                                                                                         // os itens da
-                                                                                                         // linha
+               aux = new Pedido(divisao[0], Integer.parseInt(divisao[1]), Integer.parseInt(divisao[2])); /* Inicializa o
+                                                                                                            auxiliar de
+                                                                                                            Pedidos com
+                                                                                                            os itens da
+                                                                                                            linha
+                                                                                                            */
                if (aux.getPrazo() == 0) // Testa se há prazo para o pedido
                   pedidosQtd.insere(aux); // Adiciona o pedido na Heap de pedidos sem prazo
                else

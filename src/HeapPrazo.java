@@ -125,7 +125,6 @@ public class HeapPrazo {
 
    /**
     * Método de comparação entre dois itens
-    * 
     * @param item
     * @param item2
     * @return
