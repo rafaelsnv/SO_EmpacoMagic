@@ -47,6 +47,7 @@ public class Esteira {
       System.out.println("Impressão da Heap dos pedidos prioritários\n");
       for (int i = pedidosPrazo.size()-1; i >= 0; i--) { // Loop para teste do carregamento e
          HeapQtd teste = pedidosPrazo.retorno(); // impressão dos pedidos com prioridade
+         Horario inicio = horario;
          for (int j = teste.size(); j > 0; j--) {
             Pedido pedi = teste.retorno();
 
@@ -55,10 +56,12 @@ public class Esteira {
             this.qntPacotes = this.volumeTotal / CAPACIDADE;
             this.tempoEmpacotando = ((this.qntPacotes * TEMPO_EMPACOTAMENTO) + (this.qntPacotes * TEMPO_ROLAMENTO));
             horario.addSeconds(tempoEmpacotando);
-            tempoPrevisao = (28800 + tempoEmpacotando);
+            tempoPrevisao = (28_800 + tempoEmpacotando);
+            Horario horarioPrevisao = new Horario(tempoPrevisao);
+            Horario horarioPrazo = new Horario(pedi.getPrazo());
             
-            System.out.println("Cliente: "+pedi.getCliente() + " | N° produtos: " + pedi.getTotalProdutos() + " | Prazo: " + pedi.getPrazo());
-            System.out.println("Previsão: " + tempoPrevisao + " | Concluído: " + horario.toString());
+            System.out.println("Cliente: "+pedi.getCliente() + " | N° produtos: " + pedi.getTotalProdutos() + " | Prazo: " + horarioPrazo);
+            System.out.println("Previsão: " + horarioPrevisao.toString() +" | Iniício: "+ inicio +" | Concluído: " + horario.toString());
             System.out.println();
          }
       }     
@@ -73,10 +76,12 @@ public class Esteira {
          this.qntPacotes = this.volumeTotal / CAPACIDADE;
          this.tempoEmpacotando = ((this.qntPacotes * TEMPO_EMPACOTAMENTO) + (this.qntPacotes * TEMPO_ROLAMENTO));
          horario.addSeconds(tempoEmpacotando);
-         tempoPrevisao = (28800 + tempoEmpacotando);
+         tempoPrevisao = (28_800 + tempoEmpacotando);
+         Horario horarioPrevisao = new Horario(tempoPrevisao);
+         Horario horarioPrazo = new Horario(testeQtd.getPrazo()/60);
          
-         System.out.println("Cliente: "+testeQtd.getCliente() + " | N° produtos: " + testeQtd.getTotalProdutos() + " | Prazo: " + testeQtd.getPrazo());
-         System.out.println("Previsão: " +(61200)+" | Concluído: " + horario.toString());
+         System.out.println("Cliente: "+testeQtd.getCliente() + " | N° produtos: " + testeQtd.getTotalProdutos() + " | Prazo: " + horarioPrazo);
+         System.out.println("Previsão: " +horarioPrevisao.toString()+" | Concluído: " + horario.toString());
          System.out.println();
       } 
    }

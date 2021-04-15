@@ -124,6 +124,6 @@ public class Horario {
     */
    @Override
    public String toString() {
-      return String.format("%1$2.0f:%2$2.0f:%3$2.3f", this.hrs, this.min, this.sec);
+      return String.format("%1$02.0f:%2$02.0f:%3$02.2f", this.hrs, this.min, this.sec);
    }
 }
