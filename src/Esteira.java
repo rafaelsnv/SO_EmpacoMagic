@@ -6,6 +6,8 @@ public class Esteira {
    private int qntPacotes = 0;
    private int volumeTotal = 0;
    private int totalProdutos = 0;
+   private double tempoEmpacotando;
+   private double tempoPrevisao;
 
    public Esteira() {
    }
@@ -40,21 +42,42 @@ public class Esteira {
     * @param pedidosQtd
     * @return
     */
-   public double empacotarPedido(HeapPrazo pedidosPrazo, HeapQtd pedidosQtd) {
+   public void empacotarPedidos(HeapPrazo pedidosPrazo, HeapQtd pedidosQtd, Horario horario) {
+      
+      System.out.println("Impressão da Heap dos pedidos prioritários\n");
+      for (int i = pedidosPrazo.size()-1; i >= 0; i--) { // Loop para teste do carregamento e
+         HeapQtd teste = pedidosPrazo.retorno(); // impressão dos pedidos com prioridade
+         for (int j = teste.size(); j > 0; j--) {
+            Pedido pedi = teste.retorno();
 
-      for (int i = 1; i > 0; i--) { // Loop para teste do carregamento e
-         HeapQtd qntProdutos = pedidosPrazo.retorno(); // impressão dos pedidos com prioridade
-         for (int j = 1; j > 0; j--) {
-            Pedido pedi = qntProdutos.retorno();
-            totalProdutos = pedi.getTotalProdutos();
-
+            this.totalProdutos = pedi.getTotalProdutos();
+            this.volumeTotal = this.totalProdutos * PACOTE;
+            this.qntPacotes = this.volumeTotal / CAPACIDADE;
+            this.tempoEmpacotando = ((this.qntPacotes * TEMPO_EMPACOTAMENTO) + (this.qntPacotes * TEMPO_ROLAMENTO));
+            horario.addSeconds(tempoEmpacotando);
+            tempoPrevisao = (28800 + tempoEmpacotando);
+            
+            System.out.println("Cliente: "+pedi.getCliente() + " | N° produtos: " + pedi.getTotalProdutos() + " | Prazo: " + pedi.getPrazo());
+            System.out.println("Previsão: " + tempoPrevisao + " | Concluído: " + horario.toString());
+            System.out.println();
          }
-      }
+      }     
 
-      volumeTotal = totalProdutos * PACOTE;
-      qntPacotes = volumeTotal / CAPACIDADE;
-      return (qntPacotes * TEMPO_EMPACOTAMENTO) + (qntPacotes * TEMPO_ROLAMENTO); /* Retorna o tempo do empacotamento em
-                                                                                    segundos (Apenas do mais
-                                                                                    prioritário)*/
+      System.out.println("___________________________________________________________________________________________\n" +
+              "Impressão da Heap dos pedidos sem prioridade\n");
+      for (int i = pedidosQtd.size(); i > 0; i--) { // Loop para teste do carregamento e
+         Pedido testeQtd = pedidosQtd.retorno(); // impressão dos pedidos sem prioridade
+
+         this.totalProdutos = testeQtd.getTotalProdutos();
+         this.volumeTotal = this.totalProdutos * PACOTE;
+         this.qntPacotes = this.volumeTotal / CAPACIDADE;
+         this.tempoEmpacotando = ((this.qntPacotes * TEMPO_EMPACOTAMENTO) + (this.qntPacotes * TEMPO_ROLAMENTO));
+         horario.addSeconds(tempoEmpacotando);
+         tempoPrevisao = (28800 + tempoEmpacotando);
+         
+         System.out.println("Cliente: "+testeQtd.getCliente() + " | N° produtos: " + testeQtd.getTotalProdutos() + " | Prazo: " + testeQtd.getPrazo());
+         System.out.println("Previsão: " +(61200)+" | Concluído: " + horario.toString());
+         System.out.println();
+      } 
    }
 }
