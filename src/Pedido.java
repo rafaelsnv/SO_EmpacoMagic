@@ -2,6 +2,7 @@ public class Pedido {
    private String cliente;
    private int totalProdutos;
    private int prazo;
+   private int prioridade;
 
    /**
     * Método Construtor
@@ -13,6 +14,12 @@ public class Pedido {
       this.cliente = qualCliente;
       this.totalProdutos = quantoTotal;
       this.prazo  = qualPrazo*60;
+      if (this.prazo == 0) {
+         this.prioridade = ((Integer.MAX_VALUE/1_000_000)*60) * 10_000 + totalProdutos;
+      }
+      else {
+         this.prioridade = prazo * 10_000 + totalProdutos;
+      }
    }
 
    public void setCliente(String cliente) {
@@ -37,6 +44,18 @@ public class Pedido {
 
    public int getTotalProdutos() {
       return totalProdutos;
+   }
+
+   public int getPrioridade() {
+      return prioridade;
+   }
+
+   public void setPrioridade(int prioridade) {
+      this.prioridade = prioridade;
+   }
+
+   public int compareTo (Pedido second){
+      return this.getPrioridade() - second.getPrioridade();
    }
 
    /**
