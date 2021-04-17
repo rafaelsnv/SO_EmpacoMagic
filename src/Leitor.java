@@ -1,13 +1,11 @@
 import java.io.*;
 
 public class Leitor {
-   private String caminhoArquivo;
-   private File arquivoPedidos;
+   private final String caminhoArquivo;
    private ListaPedidos listaPedidos;
 
-   public Leitor(String caminho, ListaPedidos listaPedidos) throws IOException {
-      this.caminhoArquivo = caminho;
-      this.listaPedidos = listaPedidos;
+   public Leitor(String caminhoArquivo) throws IOException {
+      this.caminhoArquivo = caminhoArquivo;
       this.lerArquivo();
    }
 
@@ -18,10 +16,11 @@ public class Leitor {
     * @throws IOException
     */
    public void lerArquivo() throws IOException {
-      this.arquivoPedidos = new File(this.caminhoArquivo);
-      BufferedReader br = new BufferedReader(new FileReader(this.arquivoPedidos));
+      File arquivoPedidos = new File(this.caminhoArquivo);
+      BufferedReader br = new BufferedReader(new FileReader(arquivoPedidos));
 
       String[] categorias;
+      ListaPedidos lista = new ListaPedidos();
       int i = 0;
 
       for (String linha; (linha = br.readLine()) != null;) {
@@ -33,10 +32,21 @@ public class Leitor {
                int qtdProdutos = Integer.parseInt(categorias[1]);
                int prazo = Integer.parseInt(categorias[2]);
 
-               this.listaPedidos.add( new Pedido(i, cliente, qtdProdutos, prazo) );
+               lista.add( new Pedido(i, cliente, qtdProdutos, prazo) );
             }
          }
       }
+
+      this.setListaPedidos(lista);
       br.close();
    }
+
+   public void setListaPedidos(ListaPedidos listaPedidos) {
+      this.listaPedidos = listaPedidos;
+   }
+
+   public ListaPedidos getListaPedidos() {
+      return this.listaPedidos;
+   }
+
 }

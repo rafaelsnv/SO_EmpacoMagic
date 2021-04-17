@@ -20,7 +20,7 @@ public class Pedido implements Comparable<Pedido> {
       this.setID(id);
       this.setCliente(qualCliente);
       this.setQtdProdutos(quantoProdutos);
-      this.setPrazo(qualPrazo * 60);
+      this.setPrazo(qualPrazo);
       this.setPrioridade(qualPrazo);
    }
 
@@ -41,7 +41,7 @@ public class Pedido implements Comparable<Pedido> {
    }
 
    public void setPrazo(int prazo) {
-      this.prazo = prazo;
+      this.prazo = prazo * 60;
    }
 
    public int getPrazo() {
@@ -82,16 +82,11 @@ public class Pedido implements Comparable<Pedido> {
     */
    @Override
    public String toString() {
-      String pedido = String.format("Pedido nº %03d | ", this.getID());
-      String cliente = String.format("Cliente: %-30s | ", this.getCliente());
+      String pedido = String.format("Pedido nº%03d | ", this.getID());
+      String cliente = String.format("Cliente: %-19s | ", this.getCliente());
       String numProdutos = String.format("Nº produtos: %-5d | ", this.getQtdProdutos());
-      String prazo = String.format("Prazo: %d min", this.getPrazo());
+      String prazo = String.format("Prazo: %d min", this.getPrazo() / 60);
 
-      StringBuilder builder = new StringBuilder(pedido);
-      builder.append(cliente);
-      builder.append(numProdutos);
-      builder.append(prazo);
-
-      return builder.toString();
+      return pedido + cliente + numProdutos + prazo;
    }
 }
