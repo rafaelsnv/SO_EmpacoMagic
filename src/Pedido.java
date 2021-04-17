@@ -1,25 +1,35 @@
-public class Pedido {
+public class Pedido implements Comparable<Pedido> {
+   private static final int PRAZO_ZERO_BASE = (Integer.MAX_VALUE/1_000_000)*60*10_000;
+   private static final int PRAZO_NORMAL_BASE = 10_000;
+   private static final int VOL_PACOTE_MAX = 5000;            // cm^3
+   private static final int VOL_PRODUTO = 250;                // cm^3
+
+   private int id;
    private String cliente;
-   private int totalProdutos;
+   private int qtdProdutos;
    private int prazo;
    private int prioridade;
 
    /**
     * Método Construtor
     * @param qualCliente O nome do cliente
-    * @param quantoTotal A quantidade total de produtos
+    * @param quantoProdutos A quantidade total de produtos
     * @param qualPrazo O prazo para entrega do pedido
     */
-   public Pedido (String qualCliente, int quantoTotal, int qualPrazo){
-      this.cliente = qualCliente;
-      this.totalProdutos = quantoTotal;
-      this.prazo  = qualPrazo*60;
-      if (this.prazo == 0) {
-         this.prioridade = ((Integer.MAX_VALUE/1_000_000)*60) * 10_000 + totalProdutos;
-      }
-      else {
-         this.prioridade = prazo * 10_000 + totalProdutos;
-      }
+   public Pedido (int id, String qualCliente, int quantoProdutos, int qualPrazo) {
+      this.setID(id);
+      this.setCliente(qualCliente);
+      this.setQtdProdutos(quantoProdutos);
+      this.setPrazo(qualPrazo * 60);
+      this.setPrioridade(qualPrazo);
+   }
+
+   public void setID(int id) {
+      this.id = id;
+   }
+
+   public int getID() {
+      return this.id;
    }
 
    public void setCliente(String cliente) {
@@ -38,22 +48,30 @@ public class Pedido {
       return prazo;
    }
 
-   public void setTotalProdutos(int totalProdutos) {
-      this.totalProdutos = totalProdutos;
+   public void setQtdProdutos(int qtdProdutos) {
+      this.qtdProdutos = qtdProdutos;
    }
 
-   public int getTotalProdutos() {
-      return totalProdutos;
+   public int getQtdProdutos() {
+      return qtdProdutos;
+   }
+
+   public void setPrioridade(int prazo) {
+      if (this.prazo == 0)
+         this.prioridade = PRAZO_ZERO_BASE + qtdProdutos;
+      else
+         this.prioridade = prazo * PRAZO_NORMAL_BASE + qtdProdutos;
    }
 
    public int getPrioridade() {
-      return prioridade;
+      return this.prioridade;
    }
 
-   public void setPrioridade(int prioridade) {
-      this.prioridade = prioridade;
+   public int getQtdPacotesTotal() {
+      return this.qtdProdutos * VOL_PRODUTO / VOL_PACOTE_MAX;
    }
 
+   @Override
    public int compareTo (Pedido second){
       return this.getPrioridade() - second.getPrioridade();
    }
@@ -64,9 +82,16 @@ public class Pedido {
     */
    @Override
    public String toString() {
-      return "Pedido" +
-              "\nCliente: '" + cliente +
-              "\nNúmero total de produtos: " + totalProdutos +
-              "\nPrazo: " + (prazo/60) + " minutos";
+      String pedido = String.format("Pedido nº %03d | ", this.getID());
+      String cliente = String.format("Cliente: %-30s | ", this.getCliente());
+      String numProdutos = String.format("Nº produtos: %-5d | ", this.getQtdProdutos());
+      String prazo = String.format("Prazo: %d min", this.getPrazo());
+
+      StringBuilder builder = new StringBuilder(pedido);
+      builder.append(cliente);
+      builder.append(numProdutos);
+      builder.append(prazo);
+
+      return builder.toString();
    }
 }
