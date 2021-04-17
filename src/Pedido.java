@@ -135,8 +135,8 @@ public class Pedido implements Comparable<Pedido> {
       String prazo = String.format("Prazo: %3d min | ", this.getPrazo() / 60);
       String retorno = String.format("Retorno: %5.1f min | ", this.getTempoDeRetorno() / 60);
       String conclusao = String.format("Concluído em: %s | ", this.getHorarioConclusao().toString());
-      String horaEsperada = String.format("Esperado: %s | ", this.getHorarioPrazo());
-      String estouroPrazo = String.format("Diferença prazo: %5.1f min", horarioConclusao.compareTo(horarioPrazo) / 60);
+      String horaEsperada = String.format("Esperado às: %s | ", this.getHorarioPrazo());
+      String estouroPrazo = String.format("Diferença: %5.1f min", horarioConclusao.compareTo(horarioPrazo) / 60);
 
       return pedido + cliente + numProdutos + prazo + retorno + conclusao + horaEsperada + estouroPrazo;
    }

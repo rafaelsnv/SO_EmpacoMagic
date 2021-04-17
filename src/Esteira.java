@@ -46,6 +46,30 @@ public class Esteira {
       return this.tempoRetornoAcumulado / listaPedidos.size();
    }
 
+   public int getNumAtrasos() {
+      int numAtrasos = 0;
+      for(int i=0; i < listaPedidos.size(); i++) {
+         Pedido pedido = listaPedidos.get(i);
+         Horario conclusao = pedido.getHorarioConclusao();
+         Horario esperado = pedido.getHorarioPrazo();
+         if (conclusao.compareTo(esperado) > 0)
+            numAtrasos++;
+      }
+      return numAtrasos;
+   }
+
+   private int getNumAntes12h() {
+      int numPacotes = 0;
+      for(int i=0; i < listaPedidos.size(); i++) {
+         Pedido pedido = listaPedidos.get(i);
+         Horario conclusao = pedido.getHorarioConclusao();
+         Horario meioDia = new Horario(43200);
+         if (conclusao.compareTo(meioDia) < 0)
+            numPacotes++;
+      }
+      return numPacotes;
+   }
+
    public void buildRelatorioPedidos() {
       StringBuilder builder = new StringBuilder("RELATÓRIO DE PEDIDOS:\n");
       for(int i=0; i < this.listaPedidos.size(); i++) {
@@ -63,11 +87,17 @@ public class Esteira {
 
    public void buildRelatorioEstatistico() {
       StringBuilder builder = new StringBuilder("RELATÓRIO ESTATÍSTICO:\n");
-      String aux = String.format("Tempo médio de retorno: %.1f min", this.getTempoRetornoMedio() / 60);
-      builder.append(aux);
+      String retorno = String.format("Tempo médio de retorno: %.1f min\n", this.getTempoRetornoMedio() / 60);
+      String numAntes12h = String.format("Nº de pacotes antes das 12h: %d\n", this.getNumAntes12h());
+      String atrasos = String.format("Nº de atrasos: %d\n", this.getNumAtrasos());
+      builder.append(retorno);
+      builder.append(numAntes12h);
+      builder.append(atrasos);
 
       this.relatorioEstatistico = builder.toString();
    }
+
+
 
    public String getRelatorioEstatistico() {
       return this.relatorioEstatistico;
