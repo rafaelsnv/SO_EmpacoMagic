@@ -43,21 +43,34 @@ public class Esteira {
     */
    public void empacotarPedidos(ListaPedidos pedidosList, Horario inicio) {
       System.out.println("Impressão da Heap dos pedidos prioritários\n");
+      double tempoMedio=0.0;
+      double tempoGasto = 0.0;
+      double producaoFeita=0.0;
+      double producaoMedia=0;
+      double qtPedidoAtendidos = 1.0;
+      Horario horarioMedio = new Horario(0);
       for (int i=0; i < pedidosList.size(); i++) { // Loop para teste do carregamento e
          Pedido pedido = pedidosList.get(i); // impressão dos pedidos com prioridade
          Horario concluido = inicio;
-         this.volumeTotal = this.totalProdutos * PACOTE;
          this.totalProdutos = pedido.getTotalProdutos();
+         this.volumeTotal = this.totalProdutos * PACOTE;
          this.qntPacotes = this.volumeTotal / CAPACIDADE;
          this.tempoEmpacotando = ((this.qntPacotes * TEMPO_EMPACOTAMENTO) + (this.qntPacotes * TEMPO_ROLAMENTO));
+         tempoGasto += this.tempoEmpacotando;
+         tempoMedio = tempoGasto/qtPedidoAtendidos;
+         producaoFeita += qntPacotes;
+         producaoMedia = producaoFeita/qtPedidoAtendidos;
+         horarioMedio = new Horario(tempoMedio);
+         qtPedidoAtendidos++;
          concluido.addSeconds(tempoEmpacotando);
          tempoPrevisao = (28_800 + tempoEmpacotando);
          Horario horarioPrevisao = new Horario(tempoPrevisao);
          Horario horarioPrazo = new Horario(pedido.getPrazo());
          System.out.println("Cliente: " + pedido.getCliente() + " | N° produtos: " + pedido.getTotalProdutos() +
                  " | Prazo (mins): " + pedido.getPrazo() + " | Prazo (horario): " + horarioPrazo);
-         System.out.println(" Previsão: " + horarioPrevisao.toString() + " | Início: " + inicio.toString() +
-                 " | Concluído: " + concluido.toString());
+         System.out.println(" Início: " + inicio.toString() + " | Concluído: " + concluido.toString() +
+                 " | Tempo Médio: " + horarioMedio + " | Produção Média: "+ producaoMedia+"\n");
       }
+      System.out.println("\nTempo Médio: " + horarioMedio + " | Produção Média: "+ producaoMedia);
    }
 }

@@ -18,16 +18,16 @@ public class App {
       Esteira esteira = new Esteira();
       esteira.empacotarPedidos(pedidosList, inicioExpediente);
 
-      System.out.println(
-              "\n______________________________________________________________________________________________________"
-                      + "\n\nImpressão da lista dos pedidos\n");
-
-      for (int i=0; i < pedidosList.size(); i++) { // Loop para teste do carregamento e
-         Pedido teste = pedidosList.get(i); // impressão dos pedidos com prioridade
-         int noPrazo = teste.getPrazo();
-         System.out.println(" Cliente: "+teste.getCliente() + " | N° produtos: " + teste.getTotalProdutos() +
-                 " | Prazo: " + teste.getPrazo()/60 + "| Prioridade: "+teste.getPrioridade() );
-         }
+//      System.out.println(
+//              "\n______________________________________________________________________________________________________"
+//                      + "\n\nImpressão da lista dos pedidos\n");
+//
+//      for (int i=0; i < pedidosList.size(); i++) { // Loop para teste do carregamento e
+//         Pedido teste = pedidosList.get(i); // impressão dos pedidos com prioridade
+//         int noPrazo = teste.getPrazo();
+//         System.out.println(" Cliente: "+teste.getCliente() + " | N° produtos: " + teste.getTotalProdutos() +
+//                 " | Prazo: " + teste.getPrazo()/60 + "| Prioridade: "+teste.getPrioridade() );
+//         }
       System.out.println();
       ler.close();
       ler.close();

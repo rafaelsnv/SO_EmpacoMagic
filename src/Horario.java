@@ -77,6 +77,15 @@ public class Horario {
    }
 
    /**
+    *
+    * @param horario
+    */
+   public void subtractHorario(Horario horario) {
+      double aux = this.toSeconds() - horario.toSeconds();
+      this.setHorario(aux);
+   }
+
+   /**
     * Método de comparação entre dois horários
     * @param horario Objeto da classe Horario.
     * @return (double) Diferença em segundos. Positivo se objeto for maior que o parâmetro.
