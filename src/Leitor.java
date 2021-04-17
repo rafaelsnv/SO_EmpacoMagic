@@ -4,16 +4,35 @@ public class Leitor {
    private final String caminhoArquivo;
    private ListaPedidos listaPedidos;
 
-   public Leitor(String caminhoArquivo) throws IOException {
-      this.caminhoArquivo = caminhoArquivo;
+   /**
+    * Método construtor
+    * @param caminho Caminho do arquivo.
+    * @throws IOException Erro de leitura.
+    */
+   public Leitor(String caminho) throws IOException {
+      this.caminhoArquivo = caminho;
       this.lerArquivo();
    }
 
    /**
-    * O método lê cada linha do .txt, transforma em pedido e retorna uma Heap de pedido
-    * @param caminho
-    * @param listaPedidos
-    * @throws IOException
+    * Deposita lista de pedidos no objeto
+    * @param listaPedidos (ListaPedidos) Lista de pedidos a ser adicionada.
+    */
+   public void setListaPedidos(ListaPedidos listaPedidos) {
+      this.listaPedidos = listaPedidos;
+   }
+
+   /**
+    * Retorna a lista de pedidos lida
+    * @return (ListaPedidos) Lista de pedidos do objeto.
+    */
+   public ListaPedidos getListaPedidos() {
+      return this.listaPedidos;
+   }
+
+   /**
+    * Lê arquivo, converte linhas em pedidos e adiciona em lista
+    * @throws IOException Erro de leitura.
     */
    public void lerArquivo() throws IOException {
       File arquivoPedidos = new File(this.caminhoArquivo);
@@ -27,12 +46,13 @@ public class Leitor {
          if (!linha.equals("")) {
             categorias = linha.split(";");
             if (categorias.length == 3) {
-               i++;
-               String cliente = categorias[0];
-               int qtdProdutos = Integer.parseInt(categorias[1]);
-               int prazo = Integer.parseInt(categorias[2]);
-
-               lista.add( new Pedido(i, cliente, qtdProdutos, prazo) );
+               Pedido pedido = new Pedido();
+               pedido.setID(++i);
+               pedido.setCliente(categorias[0]);
+               pedido.setQtdProdutos( Integer.parseInt(categorias[1]) );
+               pedido.setPrazo( Integer.parseInt(categorias[2]) );
+               pedido.setPrioridade( pedido.getPrazo() );
+               lista.add(pedido);
             }
          }
       }
@@ -40,13 +60,4 @@ public class Leitor {
       this.setListaPedidos(lista);
       br.close();
    }
-
-   public void setListaPedidos(ListaPedidos listaPedidos) {
-      this.listaPedidos = listaPedidos;
-   }
-
-   public ListaPedidos getListaPedidos() {
-      return this.listaPedidos;
-   }
-
 }

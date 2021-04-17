@@ -10,18 +10,30 @@ public class Pedido implements Comparable<Pedido> {
    private int prazo;
    private int prioridade;
 
+
    /**
-    * Método Construtor
-    * @param qualCliente O nome do cliente
-    * @param quantoProdutos A quantidade total de produtos
-    * @param qualPrazo O prazo para entrega do pedido
+    * Método Construtor sem parâmetros
     */
-   public Pedido (int id, String qualCliente, int quantoProdutos, int qualPrazo) {
+   public Pedido () {
+      this.setID(0);
+      this.setCliente("unknown");
+      this.setQtdProdutos(0);
+      this.setPrazo(0);
+      this.setPrioridade(0);
+   }
+
+   /**
+    * Método Construtor com parâmetros
+    * @param cliente O nome do cliente
+    * @param qtdProdutos A quantidade total de produtos
+    * @param prazo O prazo para entrega do pedido
+    */
+   public Pedido (int id, String cliente, int qtdProdutos, int prazo) {
       this.setID(id);
-      this.setCliente(qualCliente);
-      this.setQtdProdutos(quantoProdutos);
-      this.setPrazo(qualPrazo);
-      this.setPrioridade(qualPrazo);
+      this.setCliente(cliente);
+      this.setQtdProdutos(qtdProdutos);
+      this.setPrazo(prazo);
+      this.setPrioridade(prazo);
    }
 
    public void setID(int id) {
@@ -57,10 +69,10 @@ public class Pedido implements Comparable<Pedido> {
    }
 
    public void setPrioridade(int prazo) {
-      if (this.prazo == 0)
-         this.prioridade = PRAZO_ZERO_BASE + qtdProdutos;
+      if (prazo == 0)
+         this.prioridade = PRAZO_ZERO_BASE + this.qtdProdutos;
       else
-         this.prioridade = prazo * PRAZO_NORMAL_BASE + qtdProdutos;
+         this.prioridade = prazo * PRAZO_NORMAL_BASE + this.qtdProdutos;
    }
 
    public int getPrioridade() {
@@ -71,9 +83,14 @@ public class Pedido implements Comparable<Pedido> {
       return this.qtdProdutos * VOL_PRODUTO / VOL_PACOTE_MAX;
    }
 
+   /**
+    * Método de comparação entre dois Pedidos
+    * @param other Outro objeto da Classe Pedido.
+    * @return (int) Diferença entre prioridades. Positivo se objeto for maior que o parâmetro.
+    */
    @Override
-   public int compareTo (Pedido second){
-      return this.getPrioridade() - second.getPrioridade();
+   public int compareTo (Pedido other){
+      return this.getPrioridade() - other.getPrioridade();
    }
 
    /**
@@ -84,7 +101,7 @@ public class Pedido implements Comparable<Pedido> {
    public String toString() {
       String pedido = String.format("Pedido nº%03d | ", this.getID());
       String cliente = String.format("Cliente: %-19s | ", this.getCliente());
-      String numProdutos = String.format("Nº produtos: %-5d | ", this.getQtdProdutos());
+      String numProdutos = String.format("Nº produtos: %4d | ", this.getQtdProdutos());
       String prazo = String.format("Prazo: %d min", this.getPrazo() / 60);
 
       return pedido + cliente + numProdutos + prazo;

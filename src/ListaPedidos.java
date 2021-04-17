@@ -3,29 +3,36 @@ import java.util.Collections;
 
 public class ListaPedidos {
     private ArrayList<Pedido> listaPedidos;
+    private int qtdPacotesTotal;
+    private int volumeTotal;
 
     public ListaPedidos() {
         this.listaPedidos = new ArrayList<>();
+        this.qtdPacotesTotal = 0;
     }
 
     public Pedido get(int index) {
         return this.listaPedidos.get(index);
     }
 
-    public boolean add(Pedido newPedido){
-        return this.listaPedidos.add(newPedido);
+    public void addPacotes(int numPacotes) {
+        this.qtdPacotesTotal += numPacotes;
+    }
+
+    public void add(Pedido newPedido){
+        this.listaPedidos.add(newPedido);
+        this.addPacotes( newPedido.getQtdPacotesTotal() );
     }
 
     public int size(){
         return this.listaPedidos.size();
     }
 
-    public int compareTo(Pedido first, Pedido second){
-        return this.listaPedidos.get(first.getPrioridade()).compareTo(second);
+    public int getQtdPacotesTotal(){
+        return this.qtdPacotesTotal;
     }
 
-    public void sort (){
+    public void sort() {
         Collections.sort(listaPedidos);
     }
-
 }
