@@ -68,11 +68,11 @@ public class Esteira {
          qtPedidoAtendidos++;
          concluido.addSeconds(tempoEmpacotando);
          // Horario horarioPrevisao = new Horario(tempoPrevisao);
-         Horario horarioPrazo = new Horario(pedido.getPrazo());
+         Horario horarioPrazo = new Horario((28_800+pedido.getPrazo()));
          System.out.println("Cliente: " + pedido.getCliente() + " | N° produtos: " + pedido.getTotalProdutos()
-               + " | Prazo (mins): " + pedido.getPrazo() + " | Prazo (horario): " + horarioPrazo);
+               + " | Prazo (seg): " + pedido.getPrazo() + " | Prazo (horario): " + horarioPrazo);
          System.out.println("Início: " + horarioInicio.toString() + " | Concluído: " + concluido.toString()
-               + " | Prazo: " + concluido.compareTo(horarioPrazo) + "\n");
+               + " | Cumpriu com excesso/sobra de: " + horarioPrazo.compareTo(concluido) + " segundos" + "\n");
          horarioInicio.addSeconds(tempoEmpacotando);
       }
       System.out.println("Tempo Médio por pedido: " + horarioMedio);
