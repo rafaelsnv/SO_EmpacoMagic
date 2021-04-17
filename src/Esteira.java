@@ -1,25 +1,24 @@
 public class Esteira {
-   private static final double TEMPO_ROLAMENTO = 0.5;                        // segundos
-   private static final double TEMPO_EMPACOTAMENTO = 5.0;                    // segundos
-   private static final Horario HORARIO_INICIAL = new Horario(28_800); // 08:00:00
-   private static final Horario HORARIO_FINAL = new Horario(61_200);   // 17:00:00
+   protected static final double TEMPO_ROLAMENTO = 0.5;                        // segundos
+   protected static final double TEMPO_EMPACOTAMENTO = 5.0;                    // segundos
+   protected static final Horario HORARIO_INICIAL = new Horario(28_800); // 08:00:00
+   protected static final Horario HORARIO_FINAL = new Horario(61_200);   // 17:00:00
 
-   private ListaPedidos listaPedidos;
-   private Horario horarioAtual;
-   private String relatorioPedidos;
-   private String relatorioEstatistico;
-   private double tempoRetornoAcumulado;
+   protected ListaPedidos listaPedidos;
+   protected Horario horarioAtual;
+   protected String relatorioPedidos;
+   protected String relatorioEstatistico;
+   protected double tempoRetornoAcumulado;
 
    public Esteira() {
       this.listaPedidos = new ListaPedidos();
       this.horarioAtual = new Horario(28_800);
       this.tempoRetornoAcumulado = 0;
-      this.relatorioPedidos = "Pedidos: Aguardando empacotamento!";
-      this.relatorioEstatistico = "Estatística: Aguardando empacotamento!";
+      this.relatorioPedidos = "RELATÓRIO DE PEDIDOS:\nAguardando empacotamento!";
+      this.relatorioEstatistico = "RELATÓRIO ESTATÍSTICO:\nAguardando empacotamento!";
    }
 
    public void setListaPedidos(ListaPedidos listaPedidos) {
-      listaPedidos.sort();
       this.listaPedidos = listaPedidos;
    }
 
@@ -86,18 +85,19 @@ public class Esteira {
    }
 
    public void buildRelatorioEstatistico() {
-      StringBuilder builder = new StringBuilder("RELATÓRIO ESTATÍSTICO:\n");
+      String finalizacao = String.format("Finalizado às: %s\n", this.horarioAtual.toString());
       String retorno = String.format("Tempo médio de retorno: %.1f min\n", this.getTempoRetornoMedio() / 60);
       String numAntes12h = String.format("Nº de pacotes antes das 12h: %d\n", this.getNumAntes12h());
       String atrasos = String.format("Nº de atrasos: %d\n", this.getNumAtrasos());
+
+      StringBuilder builder = new StringBuilder("RELATÓRIO ESTATÍSTICO:\n");
+      builder.append(finalizacao);
       builder.append(retorno);
       builder.append(numAntes12h);
       builder.append(atrasos);
 
       this.relatorioEstatistico = builder.toString();
    }
-
-
 
    public String getRelatorioEstatistico() {
       return this.relatorioEstatistico;

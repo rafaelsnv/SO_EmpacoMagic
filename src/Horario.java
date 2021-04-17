@@ -126,7 +126,7 @@ public class Horario {
     */
    @Override
    public String toString() {
-      DecimalFormat myFormatter = new DecimalFormat("00.00");
+      DecimalFormat myFormatter = new DecimalFormat("00.0");
       String seg = myFormatter.format(this.sec);
       return String.format("%1$02.0f:%2$02.0f:%3$s", this.hrs, this.min, seg);
    }

@@ -19,5 +19,21 @@ public class App {
       System.out.println(relatorioPedidos);
       System.out.println(relatorioEstatistico);
 
+
+      EsteiraSJF esteiraSJF = new EsteiraSJF();
+
+      esteiraSJF.setListaPedidos(leitor.getListaPedidos());
+      esteiraSJF.empacotarPedidos();
+
+      esteiraSJF.buildRelatorioPedidos();
+      esteiraSJF.buildRelatorioEstatistico();
+
+      relatorioPedidos = esteiraSJF.getRelatorioPedidos();
+      relatorioEstatistico = esteiraSJF.getRelatorioEstatistico();
+
+      System.out.println(relatorioPedidos);
+      System.out.println(relatorioEstatistico);
+
+
    }
 }
