@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
@@ -11,25 +10,12 @@ public class App {
    static final Leitor leitor = new Leitor();
 
    public static void main(String[] args) throws IOException {
-      leitor.lerArquivo("src/SO_20_DadosEmpacotadeira1.txt", pedidosList); /* Carregamento dos
-                                                                                                  pedidos na estrutura*/
+      leitor.lerArquivo("src/SO_20_DadosEmpacotadeira1.txt", pedidosList); /* Carregamento dos pedidos na estrutura */
       pedidosList.sort(); // Ordenação dos pedidos
 
       Esteira esteira = new Esteira();
       esteira.empacotarPedidos(pedidosList, inicioExpediente);
 
-//      System.out.println(
-//              "\n______________________________________________________________________________________________________"
-//                      + "\n\nImpressão da lista dos pedidos\n");
-//
-//      for (int i=0; i < pedidosList.size(); i++) { // Loop para teste do carregamento e
-//         Pedido teste = pedidosList.get(i); // impressão dos pedidos com prioridade
-//         int noPrazo = teste.getPrazo();
-//         System.out.println(" Cliente: "+teste.getCliente() + " | N° produtos: " + teste.getTotalProdutos() +
-//                 " | Prazo: " + teste.getPrazo()/60 + "| Prioridade: "+teste.getPrioridade() );
-//         }
-      System.out.println();
-      ler.close();
       ler.close();
    }
 }
