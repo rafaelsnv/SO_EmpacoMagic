@@ -6,9 +6,12 @@ public class Pedido implements Comparable<Pedido> {
 
    private int id;
    private String cliente;
-   private int qtdProdutos;
-   private int prazo;
+   private int qtdProdutos;                                   // unidades
+   private int prazo;                                         // segundos
    private int prioridade;
+   private double tempoDeRetorno;                             // segundos
+   private Horario horarioConclusao;
+   private Horario horarioPrazo;
 
 
    /**
@@ -20,6 +23,9 @@ public class Pedido implements Comparable<Pedido> {
       this.setQtdProdutos(0);
       this.setPrazo(0);
       this.setPrioridade(0);
+      this.tempoDeRetorno = -1;
+      this.horarioConclusao = new Horario(0);
+      this.horarioPrazo = new Horario(0);
    }
 
    /**
@@ -34,6 +40,9 @@ public class Pedido implements Comparable<Pedido> {
       this.setQtdProdutos(qtdProdutos);
       this.setPrazo(prazo);
       this.setPrioridade(prazo);
+      this.tempoDeRetorno = -1;
+      this.horarioConclusao = new Horario(0);
+      this.horarioPrazo = new Horario(0);
    }
 
    public void setID(int id) {
@@ -79,10 +88,31 @@ public class Pedido implements Comparable<Pedido> {
       return this.prioridade;
    }
 
-   public int getQtdPacotesTotal() {
+   public int getQtdPacotes() {
       return this.qtdProdutos * VOL_PRODUTO / VOL_PACOTE_MAX;
    }
 
+   public void setConclusao(double entrada, double conclusao) {
+      this.tempoDeRetorno = conclusao - entrada;
+      this.horarioConclusao = new Horario(conclusao);
+
+      if (this.getPrazo() == 0)
+         this.horarioPrazo = new Horario(conclusao);
+      else
+         this.horarioPrazo = new Horario(entrada + this.getPrazo());
+   }
+
+   public double getTempoDeRetorno() {
+      return this.tempoDeRetorno;
+   }
+
+   public Horario getHorarioConclusao() {
+      return this.horarioConclusao;
+   }
+
+   public Horario getHorarioPrazo() {
+      return this.horarioPrazo;
+   }
    /**
     * Método de comparação entre dois Pedidos
     * @param other Outro objeto da Classe Pedido.
@@ -102,8 +132,12 @@ public class Pedido implements Comparable<Pedido> {
       String pedido = String.format("Pedido nº%03d | ", this.getID());
       String cliente = String.format("Cliente: %-19s | ", this.getCliente());
       String numProdutos = String.format("Nº produtos: %4d | ", this.getQtdProdutos());
-      String prazo = String.format("Prazo: %d min", this.getPrazo() / 60);
+      String prazo = String.format("Prazo: %3d min | ", this.getPrazo() / 60);
+      String retorno = String.format("Retorno: %5.1f min | ", this.getTempoDeRetorno() / 60);
+      String conclusao = String.format("Concluído em: %s | ", this.getHorarioConclusao().toString());
+      String horaEsperada = String.format("Esperado: %s | ", this.getHorarioPrazo());
+      String estouroPrazo = String.format("Diferença prazo: %5.1f min", horarioConclusao.compareTo(horarioPrazo) / 60);
 
-      return pedido + cliente + numProdutos + prazo;
+      return pedido + cliente + numProdutos + prazo + retorno + conclusao + horaEsperada + estouroPrazo;
    }
 }

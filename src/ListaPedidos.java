@@ -12,7 +12,14 @@ public class ListaPedidos {
     }
 
     public Pedido get(int index) {
-        return this.listaPedidos.get(index);
+        if(this.listaPedidos.isEmpty())
+            return new Pedido();
+        else
+            return this.listaPedidos.get(index);
+    }
+
+    public void updatePedido(int index, Pedido novo) {
+        this.listaPedidos.set(index, novo);
     }
 
     public void addPacotes(int numPacotes) {
@@ -21,7 +28,11 @@ public class ListaPedidos {
 
     public void add(Pedido newPedido){
         this.listaPedidos.add(newPedido);
-        this.addPacotes( newPedido.getQtdPacotesTotal() );
+        this.addPacotes( newPedido.getQtdPacotes() );
+    }
+
+    public boolean isEmpty() {
+        return this.qtdPacotesTotal == 0;
     }
 
     public int size(){

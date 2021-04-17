@@ -5,14 +5,19 @@ public class App {
 
    public static void main(String[] args) throws IOException {
       Leitor leitor = new Leitor(caminhoArquivo);
-      ListaPedidos listaPedidos = leitor.getListaPedidos();
+      Esteira esteira = new Esteira();
 
-      listaPedidos.sort();
+      esteira.setListaPedidos( leitor.getListaPedidos() );
+      esteira.empacotarPedidos();
 
-      for(int i=0; i < listaPedidos.size(); i++) {
-         Pedido pedido = listaPedidos.get(i);
-         System.out.println(String.format("Ordem: %3d | ", i+1) + pedido.toString());
-      }
+      esteira.buildRelatorioPedidos();
+      esteira.buildRelatorioEstatistico();
+
+      String relatorioPedidos = esteira.getRelatorioPedidos();
+      String relatorioEstatistico = esteira.getRelatorioEstatistico();
+
+      System.out.println(relatorioPedidos);
+      System.out.println(relatorioEstatistico);
 
    }
 }

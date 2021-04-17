@@ -1,3 +1,5 @@
+import java.text.*;
+
 public class Horario {
    private double hrs;
    private double min;
@@ -124,6 +126,8 @@ public class Horario {
     */
    @Override
    public String toString() {
-      return String.format("%1$02.0f:%2$02.0f:%3$02.2f", this.hrs, this.min, this.sec);
+      DecimalFormat myFormatter = new DecimalFormat("00.00");
+      String seg = myFormatter.format(this.sec);
+      return String.format("%1$02.0f:%2$02.0f:%3$s", this.hrs, this.min, seg);
    }
 }
