@@ -1,21 +1,39 @@
 import java.io.IOException;
-import java.util.Scanner;
 
 public class App {
-   static final ListaPedidos pedidosList = new ListaPedidos(); // Heap vazia para inserção dos pedidos não prioritários
-   static final Horario inicioExpediente = new Horario(28_800);
-   static final Horario meioExpediente = new Horario(43_200);
-   static final Horario fimExpediente = new Horario(61_200);
-   static final Scanner ler = new Scanner(System.in);
-   static final Leitor leitor = new Leitor();
+   static String caminhoArquivo = "src/SO_20_DadosEmpacotadeira1.txt";
 
    public static void main(String[] args) throws IOException {
-      leitor.lerArquivo("src/SO_20_DadosEmpacotadeira1.txt", pedidosList); /* Carregamento dos pedidos na estrutura */
-      pedidosList.sort(); // Ordenação dos pedidos
-
+      Leitor leitor = new Leitor(caminhoArquivo);
       Esteira esteira = new Esteira();
-      esteira.empacotarPedidos(pedidosList, inicioExpediente);
 
-      ler.close();
+      esteira.setListaPedidos( leitor.getListaPedidos() );
+      esteira.empacotar();
+
+      esteira.buildRelatorioPedidos();
+      esteira.buildRelatorioEstatistico();
+
+      String relatorioPedidos = esteira.getRelatorioPedidos();
+      String relatorioEstatistico = esteira.getRelatorioEstatistico();
+
+      System.out.println(relatorioPedidos);
+      System.out.println(relatorioEstatistico);
+
+
+      EsteiraSJF esteiraSJF = new EsteiraSJF();
+
+      esteiraSJF.setListaPedidos(leitor.getListaPedidos());
+      esteiraSJF.empacotar();
+
+      esteiraSJF.buildRelatorioPedidos();
+      esteiraSJF.buildRelatorioEstatistico();
+
+      relatorioPedidos = esteiraSJF.getRelatorioPedidos();
+      relatorioEstatistico = esteiraSJF.getRelatorioEstatistico();
+
+      System.out.println(relatorioPedidos);
+      System.out.println(relatorioEstatistico);
+
+
    }
 }

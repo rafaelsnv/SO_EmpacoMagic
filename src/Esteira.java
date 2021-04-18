@@ -1,17 +1,40 @@
 public class Esteira {
-   private static int CAPACIDADE = 5000;
-   private static int PACOTE = 250;
-   private static double TEMPO_ROLAMENTO = 0.5;
-   private static double TEMPO_EMPACOTAMENTO = 5.0;
-   private int qntPacotes = 0;
-   private int volumeTotal = 0;
-   private int totalProdutos = 0;
-   private double tempoEmpacotando;
+   protected static final double TEMPO_ROLAMENTO = 0.5;                        // segundos
+   protected static final double TEMPO_EMPACOTAMENTO = 5.0;                    // segundos
+   protected static final Horario HORARIO_INICIAL = new Horario(28_800); // 08:00:00
+   protected static final Horario HORARIO_FINAL = new Horario(61_200);   // 17:00:00
+
+   protected ListaPedidos listaPedidos;
+   protected Horario horarioAtual;
+   protected String relatorioPedidos;
+   protected String relatorioEstatistico;
+   protected double tempoRetornoAcumulado;
 
    public Esteira() {
-      qntPacotes = 0;
-      volumeTotal = 0;
-      totalProdutos = 0;
+      this.listaPedidos = new ListaPedidos();
+      this.horarioAtual = new Horario(28_800);
+      this.tempoRetornoAcumulado = 0;
+      this.relatorioPedidos = "RELATÓRIO DE PEDIDOS:\nAguardando empacotamento!";
+      this.relatorioEstatistico = "RELATÓRIO ESTATÍSTICO:\nAguardando empacotamento!";
+   }
+
+   public void setListaPedidos(ListaPedidos listaPedidos) {
+      this.listaPedidos = listaPedidos;
+   }
+
+   public void empacotar() {
+      for(int i=0; i < this.listaPedidos.size(); i++) {
+         Pedido pedido = this.listaPedidos.get(i);
+
+         double tempoEmpacotamento = (TEMPO_EMPACOTAMENTO + TEMPO_ROLAMENTO) * pedido.getQtdPacotes();
+         this.horarioAtual.addSeconds(tempoEmpacotamento);
+
+         pedido.setConclusao(HORARIO_INICIAL, this.horarioAtual);
+
+         this.listaPedidos.update(i, pedido);
+
+         this.tempoRetornoAcumulado += pedido.getTempoDeRetorno();
+      }
    }
 
    /**
@@ -19,63 +42,66 @@ public class Esteira {
     * 
     * @return Sempre retorna o tempo médio de empacotamento do lote.
     */
-   public double getTempoMedio() {
-      return 0.0;
+   public double getTempoRetornoMedio() {
+      return this.tempoRetornoAcumulado / listaPedidos.size();
    }
 
-   /**
-    * O método serve para retornar a quantidade de pacotes possíveis de serem
-    * produzidos no intervalo de tempo inserido.
-    * 
-    * @param pedidosList
-    * @param
-    * @return Retorna a quantidade total de pacotes
-    */
-   public int getQntPacotesTotal(ListaPedidos pedidosList) {
-      for (int i = pedidosList.size(); i > 0; i--) { // Loop para teste do carregamento e
-         Pedido teste = pedidosList.get(i); // impressão dos pedidos com prioridade
-         qntPacotes += ((pedidosList.get(i).getTotalProdutos() * PACOTE) / CAPACIDADE);
+   public int getNumAtrasos() {
+      int numAtrasos = 0;
+      for(int i=0; i < listaPedidos.size(); i++) {
+         Pedido pedido = listaPedidos.get(i);
+         Horario conclusao = pedido.getHorarioConclusao();
+         Horario esperado = pedido.getHorarioPrazo();
+         if (conclusao.compareTo(esperado) > 0)
+            numAtrasos++;
       }
-      return qntPacotes; // retorna a quantidade de pacotes Total
+      return numAtrasos;
    }
 
-   /**
-    * Método para empacotar todos os produtos da lista
-    * @param pedidosList
-    * @param inicio
-    */
-   public void empacotarPedidos(ListaPedidos pedidosList, Horario inicio) {
-      System.out.println("Impressão da Heap dos pedidos prioritários\n");
-      double tempoMedio = 0.0;
-      double tempoGasto = 0.0;
-      double producaoFeita = 0.0;
-      double producaoMedia = 0;
-      double qtPedidoAtendidos = 1.0;
-      Horario horarioInicio = new Horario(28_800);
-      Horario horarioMedio = new Horario(0);
-      for (int i = 0; i < pedidosList.size(); i++) { // Loop para teste do carregamento e
-         Pedido pedido = pedidosList.get(i); // impressão dos pedidos com prioridade
-         Horario concluido = inicio;
-         this.totalProdutos = pedido.getTotalProdutos();
-         this.volumeTotal = this.totalProdutos * PACOTE;
-         this.qntPacotes = this.volumeTotal / CAPACIDADE;
-         this.tempoEmpacotando = ((this.qntPacotes * TEMPO_EMPACOTAMENTO) + (this.qntPacotes * TEMPO_ROLAMENTO));
-         tempoGasto += this.tempoEmpacotando;
-         tempoMedio = tempoGasto / qtPedidoAtendidos;
-         producaoFeita += qntPacotes;
-         producaoMedia = producaoFeita / qtPedidoAtendidos;
-         horarioMedio = new Horario(tempoMedio);
-         qtPedidoAtendidos++;
-         concluido.addSeconds(tempoEmpacotando);
-         // Horario horarioPrevisao = new Horario(tempoPrevisao);
-         Horario horarioPrazo = new Horario((28_800+pedido.getPrazo()));
-         System.out.println("Cliente: " + pedido.getCliente() + " | N° produtos: " + pedido.getTotalProdutos()
-               + " | Prazo (seg): " + pedido.getPrazo() + " | Prazo (horario): " + horarioPrazo);
-         System.out.println("Início: " + horarioInicio.toString() + " | Concluído: " + concluido.toString()
-               + " | Cumpriu com excesso/sobra de: " + horarioPrazo.compareTo(concluido) + " segundos" + "\n");
-         horarioInicio.addSeconds(tempoEmpacotando);
+   private int getNumAntes12h() {
+      int numPacotes = 0;
+      for(int i=0; i < listaPedidos.size(); i++) {
+         Pedido pedido = listaPedidos.get(i);
+         Horario conclusao = pedido.getHorarioConclusao();
+         Horario meioDia = new Horario(43200);
+         if (conclusao.compareTo(meioDia) < 0)
+            numPacotes++;
       }
-      System.out.println("Tempo Médio por pedido: " + horarioMedio);
-      System.out.printf("Quantidade Média de pacotes por pedido: " + "%.2f", producaoMedia);
+      return numPacotes;
    }
+
+   public void buildRelatorioPedidos() {
+      StringBuilder builder = new StringBuilder("RELATÓRIO DE PEDIDOS:\n");
+      for(int i=0; i < this.listaPedidos.size(); i++) {
+         Pedido pedido = listaPedidos.get(i);
+         builder.append( pedido.toString() );
+         builder.append("\n");
+      }
+
+      this.relatorioPedidos = builder.toString();
+   }
+
+   public String getRelatorioPedidos() {
+      return this.relatorioPedidos;
+   }
+
+   public void buildRelatorioEstatistico() {
+      String finalizacao = String.format("Finalizado às: %s\n", this.horarioAtual.toString());
+      String retorno = String.format("Tempo médio de retorno: %.1f min\n", this.getTempoRetornoMedio() / 60);
+      String numAntes12h = String.format("Nº de pacotes antes das 12h: %d\n", this.getNumAntes12h());
+      String atrasos = String.format("Nº de atrasos: %d\n", this.getNumAtrasos());
+
+      StringBuilder builder = new StringBuilder("RELATÓRIO ESTATÍSTICO:\n");
+      builder.append(finalizacao);
+      builder.append(retorno);
+      builder.append(numAntes12h);
+      builder.append(atrasos);
+
+      this.relatorioEstatistico = builder.toString();
+   }
+
+   public String getRelatorioEstatistico() {
+      return this.relatorioEstatistico;
+   }
+
 }

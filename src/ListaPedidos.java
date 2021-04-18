@@ -1,38 +1,48 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class ListaPedidos {
-    private ArrayList<Pedido> prazoArrayList;
+    private ArrayList<Pedido> listaPedidos;
+    private int qtdPacotesTotal;
 
     public ListaPedidos() {
-        this.prazoArrayList = new ArrayList<>();
+        this.listaPedidos = new ArrayList<>();
+        this.qtdPacotesTotal = 0;
     }
 
     public Pedido get(int index) {
-        return this.prazoArrayList.get(index);
+        if(this.listaPedidos.isEmpty())
+            return new Pedido();
+        else
+            return this.listaPedidos.get(index);
     }
 
-    public boolean add(Pedido newPedido){
-        return this.prazoArrayList.add(newPedido);
+    public void update(int index, Pedido novo) {
+        this.listaPedidos.set(index, novo);
+    }
+
+    public void addPacotes(int numPacotes) {
+        this.qtdPacotesTotal += numPacotes;
+    }
+
+    public void add(Pedido novo) {
+        this.listaPedidos.add(novo);
+        this.addPacotes( novo.getQtdPacotes() );
+    }
+
+    public boolean isEmpty() {
+        return this.qtdPacotesTotal == 0;
     }
 
     public int size(){
-        return this.prazoArrayList.size();
+        return this.listaPedidos.size();
     }
 
-    public int compareTo(Pedido first, Pedido second){
-        return this.prazoArrayList.get(first.getPrioridade()).compareTo(second);
+    public int getQtdPacotesTotal(){
+        return this.qtdPacotesTotal;
     }
 
-    public void sort (){
-        Collections.sort(this.prazoArrayList, new Comparator<Pedido>() {
-            @Override
-            public int compare(Pedido p1, Pedido p2) {
-                return p1.compareTo(p2);
-            }
-        });
+    public void sort() {
+        Collections.sort(listaPedidos);
     }
-
 }
