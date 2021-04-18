@@ -4,7 +4,6 @@ import java.util.Collections;
 public class ListaPedidos {
     private ArrayList<Pedido> listaPedidos;
     private int qtdPacotesTotal;
-    private int volumeTotal;
 
     public ListaPedidos() {
         this.listaPedidos = new ArrayList<>();
@@ -18,7 +17,7 @@ public class ListaPedidos {
             return this.listaPedidos.get(index);
     }
 
-    public void updatePedido(int index, Pedido novo) {
+    public void update(int index, Pedido novo) {
         this.listaPedidos.set(index, novo);
     }
 
@@ -26,9 +25,9 @@ public class ListaPedidos {
         this.qtdPacotesTotal += numPacotes;
     }
 
-    public void add(Pedido newPedido){
-        this.listaPedidos.add(newPedido);
-        this.addPacotes( newPedido.getQtdPacotes() );
+    public void add(Pedido novo) {
+        this.listaPedidos.add(novo);
+        this.addPacotes( novo.getQtdPacotes() );
     }
 
     public boolean isEmpty() {

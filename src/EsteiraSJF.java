@@ -1,4 +1,4 @@
-public class EsteiraSJF extends Esteira{
+public class EsteiraSJF extends Esteira {
 
    public EsteiraSJF() {
       super();

@@ -18,7 +18,7 @@ public class Leitor {
     * Deposita lista de pedidos no objeto
     * @param listaPedidos (ListaPedidos) Lista de pedidos a ser adicionada.
     */
-   public void setListaPedidos(ListaPedidos listaPedidos) {
+   private void setListaPedidos(ListaPedidos listaPedidos) {
       this.listaPedidos = listaPedidos;
    }
 

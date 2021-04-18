@@ -1,7 +1,7 @@
 public class Pedido implements Comparable<Pedido> {
    private static final int PRAZO_ZERO_BASE = (Integer.MAX_VALUE/1_000_000)*60*10_000;
    private static final int PRAZO_NORMAL_BASE = 10_000;
-   private static final int VOL_PACOTE_MAX = 5000;            // cm^3
+   private static final int VOL_PACOTE_MAX = 5_000;           // cm^3
    private static final int VOL_PRODUTO = 250;                // cm^3
 
    private int id;
@@ -53,8 +53,8 @@ public class Pedido implements Comparable<Pedido> {
       return this.id;
    }
 
-   public void setCliente(String cliente) {
-      this.cliente = cliente;
+   public void setCliente(String nome) {
+      this.cliente = nome;
    }
 
    public String getCliente() {
@@ -92,14 +92,14 @@ public class Pedido implements Comparable<Pedido> {
       return this.qtdProdutos * VOL_PRODUTO / VOL_PACOTE_MAX;
    }
 
-   public void setConclusao(double entrada, double conclusao) {
-      this.tempoDeRetorno = conclusao - entrada;
-      this.horarioConclusao = new Horario(conclusao);
+   public void setConclusao(Horario entrada, Horario conclusao) {
+      this.tempoDeRetorno = conclusao.toSeconds() - entrada.toSeconds();
+      this.horarioConclusao = new Horario(conclusao.toSeconds());
 
       if (this.getPrazo() == 0)
-         this.horarioPrazo = new Horario(conclusao);
+         this.horarioPrazo = new Horario(conclusao.toSeconds());
       else
-         this.horarioPrazo = new Horario(entrada + this.getPrazo());
+         this.horarioPrazo = new Horario(entrada.toSeconds() + (double) this.getPrazo());
    }
 
    public double getTempoDeRetorno() {
@@ -115,12 +115,12 @@ public class Pedido implements Comparable<Pedido> {
    }
    /**
     * Método de comparação entre dois Pedidos
-    * @param other Outro objeto da Classe Pedido.
+    * @param outro Outro objeto da Classe Pedido.
     * @return (int) Diferença entre prioridades. Positivo se objeto for maior que o parâmetro.
     */
    @Override
-   public int compareTo (Pedido other){
-      return this.getPrioridade() - other.getPrioridade();
+   public int compareTo (Pedido outro){
+      return this.getPrioridade() - outro.getPrioridade();
    }
 
    /**

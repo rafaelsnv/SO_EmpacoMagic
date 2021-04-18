@@ -22,16 +22,16 @@ public class Esteira {
       this.listaPedidos = listaPedidos;
    }
 
-   public void empacotarPedidos() {
+   public void empacotar() {
       for(int i=0; i < this.listaPedidos.size(); i++) {
          Pedido pedido = this.listaPedidos.get(i);
 
          double tempoEmpacotamento = (TEMPO_EMPACOTAMENTO + TEMPO_ROLAMENTO) * pedido.getQtdPacotes();
          this.horarioAtual.addSeconds(tempoEmpacotamento);
 
-         pedido.setConclusao(HORARIO_INICIAL.toSeconds(), this.horarioAtual.toSeconds());
+         pedido.setConclusao(HORARIO_INICIAL, this.horarioAtual);
 
-         this.listaPedidos.updatePedido(i, pedido);
+         this.listaPedidos.update(i, pedido);
 
          this.tempoRetornoAcumulado += pedido.getTempoDeRetorno();
       }

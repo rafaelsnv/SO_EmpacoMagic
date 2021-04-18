@@ -8,7 +8,7 @@ public class App {
       Esteira esteira = new Esteira();
 
       esteira.setListaPedidos( leitor.getListaPedidos() );
-      esteira.empacotarPedidos();
+      esteira.empacotar();
 
       esteira.buildRelatorioPedidos();
       esteira.buildRelatorioEstatistico();
@@ -23,7 +23,7 @@ public class App {
       EsteiraSJF esteiraSJF = new EsteiraSJF();
 
       esteiraSJF.setListaPedidos(leitor.getListaPedidos());
-      esteiraSJF.empacotarPedidos();
+      esteiraSJF.empacotar();
 
       esteiraSJF.buildRelatorioPedidos();
       esteiraSJF.buildRelatorioEstatistico();
