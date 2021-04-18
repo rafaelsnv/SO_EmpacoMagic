@@ -5,21 +5,21 @@ public class App {
 
    public static void main(String[] args) throws IOException {
       Leitor leitor = new Leitor(caminhoArquivo);
+
+      // Esteira comum
       Esteira esteira = new Esteira();
 
       esteira.setListaPedidos( leitor.getListaPedidos() );
       esteira.empacotar();
-
       esteira.buildRelatorioPedidos();
       esteira.buildRelatorioEstatistico();
 
-      String relatorioPedidos = esteira.getRelatorioPedidos();
-      String relatorioEstatistico = esteira.getRelatorioEstatistico();
-
-      System.out.println(relatorioPedidos);
-      System.out.println(relatorioEstatistico);
+      System.out.println("\nESTEIRA COMUM\n=============\n");
+      System.out.println( esteira.getRelatorioPedidos() );
+      System.out.println( esteira.getRelatorioEstatistico() );
 
 
+      // Esteira SJF
       EsteiraSJF esteiraSJF = new EsteiraSJF();
 
       esteiraSJF.setListaPedidos(leitor.getListaPedidos());
@@ -28,12 +28,8 @@ public class App {
       esteiraSJF.buildRelatorioPedidos();
       esteiraSJF.buildRelatorioEstatistico();
 
-      relatorioPedidos = esteiraSJF.getRelatorioPedidos();
-      relatorioEstatistico = esteiraSJF.getRelatorioEstatistico();
-
-      System.out.println(relatorioPedidos);
-      System.out.println(relatorioEstatistico);
-
-
+      System.out.println("\n\nESTEIRA SJF\n===========\n");
+      System.out.println( esteiraSJF.getRelatorioPedidos() );
+      System.out.println( esteiraSJF.getRelatorioEstatistico() );
    }
 }
