@@ -41,7 +41,6 @@ public class Pedido implements Comparable<Pedido> {
       this.setCliente(cliente);
       this.setQtdProdutos(qtdProdutos);
       this.setPrazo(prazo);
-      this.setPrioridade(prazo);
       this.setMinutoChegada(minutoChegada);
       this.tempoDeRetorno = -1;
       this.horarioConclusao = new Horario(0);
@@ -62,13 +61,14 @@ public class Pedido implements Comparable<Pedido> {
 
    public void setPrazo(int prazo) {
       this.prazo = prazo * 60;
+      this.setPrioridade(prazo);
    }
 
    public void setMinutoChegada(int minutoChegada) {
       this.horaDeChegada = new Horario(28_800 + (double) minutoChegada * 60);
    }
 
-   public void setPrioridade(int prazo) {
+   private void setPrioridade(int prazo) {
       if (prazo == 0)
          this.prioridade = PRAZO_ZERO_BASE + this.qtdProdutos;
       else

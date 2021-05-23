@@ -5,12 +5,8 @@ public class SyncRelogio {
       this.horarioGeral = new Horario(28_800);
    }
 
-   public synchronized void addSeconds() {
-         this.horarioGeral.addSeconds(30);
-   }
-
-   public synchronized void addMinutes() {
-      this.horarioGeral.addMinutes(0.5);
+   public synchronized void addSeconds(double seconds) {
+      this.horarioGeral.addSeconds(seconds);
    }
 
    public synchronized Horario getHorarioGeral() {

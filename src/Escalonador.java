@@ -1,9 +1,10 @@
 public class Escalonador {
     private ListaPedidos listaTodos;
-    public final SyncList listEmpacotar = new SyncList();
+    public SyncList filaEmpacotar;
 
-    public Escalonador(ListaPedidos list) {
-        this.setListaTodos(list);
+    public Escalonador(ListaPedidos listaPedidosTodos, SyncList filaEmpacotar) {
+        this.setListaTodos(listaPedidosTodos);
+        this.filaEmpacotar = filaEmpacotar;
     }
 
     private void setListaTodos(ListaPedidos list) {

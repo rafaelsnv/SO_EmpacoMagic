@@ -10,6 +10,7 @@ public class SyncList {
      * Construtor da fila de Pedidos prontos para empacotamento.
      */
     public SyncList() {
+
     }
 
     /**
@@ -23,6 +24,10 @@ public class SyncList {
         this.filaPedidos.sort();
     }
 
+    public synchronized void addToList(Pedido pedido){
+        this.filaPedidos.add(pedido);
+    }
+
     /**
      * Método sincronizado para obter o primeiro  da fila, ou seja, o com maior prioridade.
      * @return o  com maior prioridade;
@@ -30,15 +35,8 @@ public class SyncList {
     public synchronized Pedido getFirst(){
         Pedido pedido = this.filaPedidos.get(0);
         this.filaPedidos.remove(pedido);
-        return pedido;
-    }
 
-    /**
-     * Método sincronizado para remover um  da fila.
-     * @param pedido o  a ser removido da fila.
-     */
-    public synchronized void removeAtList(Pedido pedido){
-        this.filaPedidos.remove(pedido);
+        return pedido;
     }
 
     /**

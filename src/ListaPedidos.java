@@ -56,11 +56,11 @@ public class ListaPedidos {
 
     @Override
     public String toString() {
-        String result = "Quantidade de pacotes total: " + qtdPacotesTotal;
+        StringBuilder result = new StringBuilder("Quantidade de pacotes total: " + qtdPacotesTotal);
         for (Pedido p:this.listaPedidos) {
-            String aux ="\n" + p.toString();
-            result.concat(aux);
+            String aux = "\n" + p.toString();
+            result.append(aux);
         }
-        return result;
+        return result.toString();
     }
 }
