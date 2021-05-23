@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Esteira extends Thread {
    private static final int TEMPO_ROLAMENTO = 5;       // deciseconds (1 sec = 10 deciseconds)
    private static final int TEMPO_EMPACOTAMENTO = 50;  // deciseconds (1 sec = 10 deciseconds)
