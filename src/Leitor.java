@@ -51,7 +51,7 @@ public class Leitor {
                pedido.setCliente(categorias[0]);
                pedido.setQtdProdutos( Integer.parseInt(categorias[1]) );
                pedido.setPrazo( Integer.parseInt(categorias[2]) );
-               pedido.setHoraDeChegada( Integer.parseInt(categorias[3]) );
+               pedido.setMinutoChegada( Integer.parseInt(categorias[3]) );
                lista.add(pedido);
             }
          }

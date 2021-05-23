@@ -16,8 +16,8 @@ public class SyncList {
      * Método sincronizado para adicionar um  na fila.
      * @param pedidos A lista de pedidos a serem adicionados.
      */
-    public synchronized void addToList(ArrayList<Pedido> pedidos){
-        for (Pedido p:pedidos) {
+    public synchronized void addToList(ListaPedidos pedidos){
+        for (Pedido p:pedidos.getListaPedidos()) {
             this.filaPedidos.add(p);
         }
         this.filaPedidos.sort();

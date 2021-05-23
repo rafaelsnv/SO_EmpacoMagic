@@ -42,6 +42,10 @@ public class ListaPedidos {
         return this.qtdPacotesTotal;
     }
 
+    public ArrayList<Pedido> getListaPedidos() {
+        return listaPedidos;
+    }
+
     public void sort() {
         Collections.sort(listaPedidos);
     }
