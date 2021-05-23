@@ -9,15 +9,13 @@ public class Esteira extends Thread {
    private static Esteira anterior;
 
    private final int meuID;
-   private final int numPacotesEmpacotar;
    public final SyncList fila;
    public final SyncRelatorio relatorio;
    public final SyncRelogio relogio;
    public final ListaPedidos listaTodos;
 
-   public Esteira(int ID, int numPacotes, SyncList fila, SyncRelatorio relatorio, ListaPedidos listaTodos, SyncRelogio relogio) {
+   public Esteira(int ID, SyncList fila, SyncRelatorio relatorio, ListaPedidos listaTodos, SyncRelogio relogio) {
       this.meuID = ID;
-      this.numPacotesEmpacotar = numPacotes;
       this.fila = fila;
       this.relatorio = relatorio;
       this.relogio = relogio;

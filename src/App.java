@@ -14,10 +14,8 @@ public class App {
 
       Escalonador escalonador = new Escalonador(listaPedidosTodos, filaEmpacotar, relogio);
 
-      int numPacotesE1 = listaPedidosTodos.size() / 2;
-      int numPacotesE2 = listaPedidosTodos.size() - numPacotesE1;
-      Esteira esteira_1 = new Esteira(1, numPacotesE1, filaEmpacotar, relatorio, listaPedidosTodos, relogio);
-      Esteira esteira_2 = new Esteira(2, numPacotesE2, filaEmpacotar, relatorio, listaPedidosTodos, relogio);
+      Esteira esteira_1 = new Esteira(1, filaEmpacotar, relatorio, listaPedidosTodos, relogio);
+      Esteira esteira_2 = new Esteira(2, filaEmpacotar, relatorio, listaPedidosTodos, relogio);
 
       try {
          escalonador.start();
