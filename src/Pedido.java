@@ -6,11 +6,11 @@ public class Pedido implements Comparable<Pedido> {
 
    private int id;
    private String cliente;
-   private int qtdProdutos; // unidades
-   private int prazo; // segundos
-   private int horaDeChegada;
-   private double tempoDeRetorno; // segundos
-   private Horario horarioConclusao;
+   private int qtdProdutos;                   // unidades
+   private int prazo;                         // segundos
+   private int horaDeChegada;                 // minutos
+   private double tempoDeRetorno;             // segundos
+   private Horario horarioConclusao;         
    private Horario horarioPrazo;
    private int prioridade;
 
