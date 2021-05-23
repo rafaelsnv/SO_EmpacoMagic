@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Fila que irá conter somente os pedidos já prontos e aqueles que chegarem.
  */
@@ -12,10 +14,13 @@ public class SyncList {
 
     /**
      * Método sincronizado para adicionar um  na fila.
-     * @param pedido O novo pedido a ser adicionado.
+     * @param pedidos A lista de pedidos a serem adicionados.
      */
-    public synchronized void addToList(Pedido pedido){
-        this.filaPedidos.add(pedido);
+    public synchronized void addToList(ArrayList<Pedido> pedidos){
+        for (Pedido p:pedidos) {
+            this.filaPedidos.add(p);
+        }
+        this.filaPedidos.sort();
     }
 
     /**
@@ -23,7 +28,9 @@ public class SyncList {
      * @return o  com maior prioridade;
      */
     public synchronized Pedido getFirst(){
-        return this.filaPedidos.get(0);
+        Pedido pedido = this.filaPedidos.get(0);
+        this.filaPedidos.remove(pedido);
+        return pedido;
     }
 
     /**
