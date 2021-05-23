@@ -1,4 +1,4 @@
-public class Escalonador {
+public class Escalonador extends Thread{
     private ListaPedidos listaTodos;
     public SyncList filaEmpacotar;
 
@@ -15,16 +15,23 @@ public class Escalonador {
         return this.listaTodos;
     }
 
-    private ListaPedidos collect(SyncRelogio generalClock){
+    private void updateFilaEmpacotamento(SyncRelogio generalClock, SyncList filaEmpacotar){
         ListaPedidos pedidosValidos = new ListaPedidos();
         for (Pedido pedido: listaTodos.getListaPedidos()){
             Horario tempoChegada = pedido.getHoraDeChegada();
-            Horario horarioGeral = generalClock.getHorarioGeral();
-            if (horarioGeral.compareTo(tempoChegada)<=0) {
+            Horario relogioGeral = generalClock.getHorarioGeral();
+            if (relogioGeral.compareTo(tempoChegada)<=0) {
                 pedidosValidos.add(pedido);
                 listaTodos.remove(pedido);
             }
         }
-        return pedidosValidos;
+        filaEmpacotar.addToList(pedidosValidos);
+    }
+
+    public void run() {
+        while (this.listaTodos.size()>0){
+            updateFilaEmpacotamento(relogio.getHorarioGeral());
+        }
+        System.out.println("Escalonador encerrado.");
     }
 }
