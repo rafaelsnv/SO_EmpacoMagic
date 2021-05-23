@@ -34,6 +34,6 @@ public class Escalonador extends Thread{
         while (this.listaTodos.size()>0){
             updateFilaEmpacotamento();
         }
-        System.out.println("Escalonador encerrado.");
+        System.out.println("Escalonador finalizou!");
     }
 }
