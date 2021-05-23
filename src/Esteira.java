@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Esteira extends Thread {
    private static final int TEMPO_ROLAMENTO = 5;       // deciseconds (1 sec = 10 deciseconds)
@@ -12,55 +13,64 @@ public class Esteira extends Thread {
    public final SyncList fila;
    public final SyncList relatorio;
    public final SyncRelogio relogio;
+   public final ListaPedidos listaTodos;
 
-   public Esteira(int ID, int numPacotes, SyncList fila, SyncList relatorio, SyncRelogio relogio) {
+   public Esteira(int ID, int numPacotes, SyncList fila, SyncList relatorio, ListaPedidos listaTodos, SyncRelogio relogio) {
       this.meuID = ID;
       this.numPacotesEmpacotar = numPacotes;
       this.fila = fila;
       this.relatorio = relatorio;
       this.relogio = relogio;
+      this.listaTodos = listaTodos;
       numEsteirasAtivas += 1;
    }
 
    private void addDecisecRelogio(Esteira me) throws InterruptedException {
       synchronized (lock) {
-         while (anterior == me)
+         while (anterior == me & numEsteirasAtivas > 1)
             lock.wait();
 
          relogio.addSeconds(0.1 / numEsteirasAtivas);
          anterior = me;
-         lock.notifyAll();
+
+         if(numEsteirasAtivas > 1)
+            lock.notifyAll();
       }
    }
 
    public void empacotar(Esteira me) throws InterruptedException {
-      Pedido pedido = fila.getFirst();
+      if(fila.getSize() > 0) {
+         Pedido pedido = fila.getFirst();
 
-      int tempoEmpacotamento = (TEMPO_EMPACOTAMENTO + TEMPO_ROLAMENTO) * pedido.getQtdPacotes();
-      for (int dsec = 1; dsec <= tempoEmpacotamento; dsec++)
-         this.addDecisecRelogio(this);
+         int tempoEmpacotamento = (TEMPO_EMPACOTAMENTO + TEMPO_ROLAMENTO) * pedido.getQtdPacotes();
+         for (int dsec = 1; dsec <= tempoEmpacotamento; dsec++)
+            this.addDecisecRelogio(this);
 
-      synchronized (lock) {
-         while (anterior == me)
-            lock.wait();
+         synchronized (lock) {
+            while (anterior == me & numEsteirasAtivas > 1)
+               lock.wait();
 
-         pedido.setConclusao(this.relogio.getHorarioGeral());
-         relatorio.addToList(pedido);
+            Horario horarioAtual = new Horario(this.relogio.getHorarioGeral().toSeconds());
+            pedido.setConclusao(horarioAtual);
+            relatorio.addToList(pedido);
 
-         anterior = me;
-         lock.notifyAll();
+            anterior = me;
+
+            if(numEsteirasAtivas > 1)
+               lock.notifyAll();
+         }
       }
    }
 
    public void run() {
-      for (int i = 0; i < this.numPacotesEmpacotar; i++) {
+      while (this.listaTodos.size() > 0 | this.fila.getSize() > 0) {
          try {
             this.empacotar(this);
          } catch (InterruptedException e) {
             e.printStackTrace();
          }
-         System.out.println("Esteira " + this.meuID + " finalizou!");
-         numEsteirasAtivas -= 1;
       }
+      numEsteirasAtivas -= 1;
+      System.out.println("Esteira " + this.meuID + " finalizou!");
    }
 }

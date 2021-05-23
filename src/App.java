@@ -10,11 +10,27 @@ public class App {
       SyncList filaEmpacotar = new SyncList();
       SyncList relatorio = new SyncList();
 
-      Escalonador escalonador = new Escalonador(listaPedidosTodos, filaEmpacotar);
+      SyncRelogio relogio = new SyncRelogio();
 
-      int numTotalPacotes = listaPedidosTodos.size();
-      Esteira esteira_1 = new Esteira(1, numTotalPacotes/2, filaEmpacotar, relatorio, );
+      Escalonador escalonador = new Escalonador(listaPedidosTodos, filaEmpacotar, relogio);
 
+      int numPacotesE1 = listaPedidosTodos.size() / 2;
+      int numPacotesE2 = listaPedidosTodos.size() - numPacotesE1;
+      Esteira esteira_1 = new Esteira(1, numPacotesE1, filaEmpacotar, relatorio, listaPedidosTodos, relogio);
+      Esteira esteira_2 = new Esteira(2, numPacotesE2, filaEmpacotar, relatorio, listaPedidosTodos, relogio);
 
+      try {
+         escalonador.start();
+         esteira_1.start();
+         esteira_2.start();
+
+         escalonador.join();
+         esteira_1.join();
+         esteira_2.join();
+      } catch (InterruptedException ignored) {}
+
+      System.out.println("Empacotamento concluído com sucesso! \n\n");
+
+      System.out.println(relatorio);
    }
 }

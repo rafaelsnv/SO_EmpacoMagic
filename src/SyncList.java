@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 /**
  * Fila que irá conter somente os pedidos já prontos e aqueles que chegarem.
@@ -10,7 +9,6 @@ public class SyncList {
      * Construtor da fila de Pedidos prontos para empacotamento.
      */
     public SyncList() {
-
     }
 
     /**

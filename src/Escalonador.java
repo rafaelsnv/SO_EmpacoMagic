@@ -1,36 +1,38 @@
 public class Escalonador extends Thread{
     private ListaPedidos listaTodos;
     public SyncList filaEmpacotar;
+    public SyncRelogio relogio;
 
-    public Escalonador(ListaPedidos listaPedidosTodos, SyncList filaEmpacotar) {
-        this.setListaTodos(listaPedidosTodos);
+    public Escalonador(ListaPedidos listaPedidosTodos, SyncList filaEmpacotar, SyncRelogio relogio) {
+        this.listaTodos = listaPedidosTodos;
         this.filaEmpacotar = filaEmpacotar;
-    }
-
-    private void setListaTodos(ListaPedidos list) {
-         this.listaTodos = list;
+        this.relogio = relogio;
     }
 
     public ListaPedidos getListaTodos() {
         return this.listaTodos;
     }
 
-    private void updateFilaEmpacotamento(SyncRelogio generalClock, SyncList filaEmpacotar){
+    private void updateFilaEmpacotamento() {
         ListaPedidos pedidosValidos = new ListaPedidos();
-        for (Pedido pedido: listaTodos.getListaPedidos()){
+        for (Pedido pedido : listaTodos.getListaPedidos()){
             Horario tempoChegada = pedido.getHoraDeChegada();
-            Horario relogioGeral = generalClock.getHorarioGeral();
-            if (relogioGeral.compareTo(tempoChegada)<=0) {
+            if (tempoChegada.compareTo(relogio.getHorarioGeral())<=0)
                 pedidosValidos.add(pedido);
-                listaTodos.remove(pedido);
-            }
+            else
+                break;
         }
-        filaEmpacotar.addToList(pedidosValidos);
+
+        for (Pedido pedido : pedidosValidos.getListaPedidos())
+            listaTodos.remove(pedido);
+
+        if(pedidosValidos.size() > 0)
+            filaEmpacotar.addToList(pedidosValidos);
     }
 
     public void run() {
         while (this.listaTodos.size()>0){
-            updateFilaEmpacotamento(relogio.getHorarioGeral());
+            updateFilaEmpacotamento();
         }
         System.out.println("Escalonador encerrado.");
     }
