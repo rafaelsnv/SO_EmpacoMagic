@@ -1,107 +1,87 @@
-public class Esteira {
-   protected static final double TEMPO_ROLAMENTO = 0.5;                        // segundos
-   protected static final double TEMPO_EMPACOTAMENTO = 5.0;                    // segundos
-   protected static final Horario HORARIO_INICIAL = new Horario(28_800); // 08:00:00
-   protected static final Horario HORARIO_FINAL = new Horario(61_200);   // 17:00:00
+import java.util.ArrayList;
+import java.util.List;
 
-   protected ListaPedidos listaPedidos;
-   protected Horario horarioAtual;
-   protected String relatorioPedidos;
-   protected String relatorioEstatistico;
-   protected double tempoRetornoAcumulado;
+public class Esteira extends Thread {
+   private static final int TEMPO_ROLAMENTO = 5;       // deciseconds (1 sec = 10 deciseconds)
+   private static final int TEMPO_EMPACOTAMENTO = 50;  // deciseconds (1 sec = 10 deciseconds)
+   private static final Object lock = new Object();
+   private static int numEsteirasAtivas = 0;
+   private static Esteira anterior;
 
-   public Esteira() {
-      this.listaPedidos = new ListaPedidos();
-      this.horarioAtual = new Horario(28_800);
-      this.tempoRetornoAcumulado = 0;
-      this.relatorioPedidos = "RELATÓRIO DE PEDIDOS:\nAguardando empacotamento!";
-      this.relatorioEstatistico = "RELATÓRIO ESTATÍSTICO:\nAguardando empacotamento!";
+   private final int meuID;
+   public final SyncList fila;
+   public final SyncRelatorio relatorio;
+   public final SyncRelogio relogio;
+   public final ListaPedidos listaTodos;
+
+   public Esteira(int ID, SyncList fila, SyncRelatorio relatorio, ListaPedidos listaTodos, SyncRelogio relogio) {
+      this.meuID = ID;
+      this.fila = fila;
+      this.relatorio = relatorio;
+      this.relogio = relogio;
+      this.listaTodos = listaTodos;
+      numEsteirasAtivas += 1;
    }
 
-   public void setListaPedidos(ListaPedidos listaPedidos) {
-      this.listaPedidos = listaPedidos;
-   }
+   private void addDecisecRelogio(Esteira me) throws InterruptedException {
+      synchronized (lock) {
+         while (anterior == me & numEsteirasAtivas > 1)
+            lock.wait();
 
-   public void empacotar() {
-      for(int i=0; i < this.listaPedidos.size(); i++) {
-         Pedido pedido = this.listaPedidos.get(i);
+         relogio.addSeconds(0.1 / numEsteirasAtivas);
+         anterior = me;
 
-         double tempoEmpacotamento = (TEMPO_EMPACOTAMENTO + TEMPO_ROLAMENTO) * pedido.getQtdPacotes();
-         this.horarioAtual.addSeconds(tempoEmpacotamento);
-
-         pedido.setConclusao(HORARIO_INICIAL, this.horarioAtual);
-
-         this.listaPedidos.update(i, pedido);
-
-         this.tempoRetornoAcumulado += pedido.getTempoDeRetorno();
+         if(numEsteirasAtivas > 1)
+            lock.notifyAll();
       }
    }
 
-   /**
-    * O método deve retornar o tempo médio gasto para executar o lote de produtos.
-    * 
-    * @return Sempre retorna o tempo médio de empacotamento do lote.
-    */
-   public double getTempoRetornoMedio() {
-      return this.tempoRetornoAcumulado / listaPedidos.size();
-   }
+   public void empacotar(Esteira me) throws InterruptedException {
+      if(fila.getSize() > 0) {
+         Pedido pedido = fila.getFirst();
 
-   public int getNumAtrasos() {
-      int numAtrasos = 0;
-      for(int i=0; i < listaPedidos.size(); i++) {
-         Pedido pedido = listaPedidos.get(i);
-         Horario conclusao = pedido.getHorarioConclusao();
-         Horario esperado = pedido.getHorarioPrazo();
-         if (conclusao.compareTo(esperado) > 0)
-            numAtrasos++;
+         int tempoEmpacotamento = (TEMPO_EMPACOTAMENTO + TEMPO_ROLAMENTO) * pedido.getQtdPacotes();
+         for (int dsec = 1; dsec <= tempoEmpacotamento; dsec++)
+            this.addDecisecRelogio(this);
+
+         synchronized (lock) {
+            while (anterior == me & numEsteirasAtivas > 1)
+               lock.wait();
+
+            Horario horarioAtual = new Horario(this.relogio.getHorarioGeral().toSeconds());
+            pedido.setConclusao(horarioAtual, this.meuID);
+            relatorio.addToList(pedido);
+
+            anterior = me;
+
+            if(numEsteirasAtivas > 1)
+               lock.notifyAll();
+         }
       }
-      return numAtrasos;
    }
 
-   private int getNumAntes12h() {
-      int numPacotes = 0;
-      for(int i=0; i < listaPedidos.size(); i++) {
-         Pedido pedido = listaPedidos.get(i);
-         Horario conclusao = pedido.getHorarioConclusao();
-         Horario meioDia = new Horario(43200);
-         if (conclusao.compareTo(meioDia) < 0)
-            numPacotes++;
+   public void run() {
+      while (this.listaTodos.size() > 0 | this.fila.getSize() > 0)
+         try {
+            this.empacotar(this);
+         } catch (InterruptedException e) {
+            e.printStackTrace();
+         }
+
+      synchronized (lock) {
+         while (anterior == this & numEsteirasAtivas > 1)
+            try {
+               lock.wait();
+            } catch (InterruptedException e) {
+               e.printStackTrace();
+            }
+
+         numEsteirasAtivas--;
+         System.out.println("Esteira " + this.meuID + " finalizou!");
+
+         if(numEsteirasAtivas != 0)
+            lock.notifyAll();
       }
-      return numPacotes;
+
    }
-
-   public void buildRelatorioPedidos() {
-      StringBuilder builder = new StringBuilder("RELATÓRIO DE PEDIDOS:\n");
-      for(int i=0; i < this.listaPedidos.size(); i++) {
-         Pedido pedido = listaPedidos.get(i);
-         builder.append( pedido.toString() );
-         builder.append("\n");
-      }
-
-      this.relatorioPedidos = builder.toString();
-   }
-
-   public String getRelatorioPedidos() {
-      return this.relatorioPedidos;
-   }
-
-   public void buildRelatorioEstatistico() {
-      String finalizacao = String.format("Finalizado às: %s\n", this.horarioAtual.toString());
-      String retorno = String.format("Tempo médio de retorno: %.1f min\n", this.getTempoRetornoMedio() / 60);
-      String numAntes12h = String.format("Nº de pacotes antes das 12h: %d\n", this.getNumAntes12h());
-      String atrasos = String.format("Nº de atrasos: %d\n", this.getNumAtrasos());
-
-      StringBuilder builder = new StringBuilder("RELATÓRIO ESTATÍSTICO:\n");
-      builder.append(finalizacao);
-      builder.append(retorno);
-      builder.append(numAntes12h);
-      builder.append(atrasos);
-
-      this.relatorioEstatistico = builder.toString();
-   }
-
-   public String getRelatorioEstatistico() {
-      return this.relatorioEstatistico;
-   }
-
 }

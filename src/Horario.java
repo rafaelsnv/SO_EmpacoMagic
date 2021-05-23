@@ -27,6 +27,7 @@ public class Horario {
    /**
     * Adiciona segundos ao Horário
     * @param seconds (double) Número de segundos a serem adicionados.
+    * @return
     */
    public void addSeconds(double seconds) {
       double aux = this.toSeconds() + seconds;

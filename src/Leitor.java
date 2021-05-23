@@ -9,7 +9,7 @@ public class Leitor {
     * @param caminho Caminho do arquivo.
     * @throws IOException Erro de leitura.
     */
-   public Leitor(String caminho) throws IOException {
+   public Leitor (String caminho) throws IOException {
       this.caminhoArquivo = caminho;
       this.lerArquivo();
    }
@@ -45,13 +45,13 @@ public class Leitor {
       for (String linha; (linha = br.readLine()) != null;) {
          if (!linha.equals("")) {
             categorias = linha.split(";");
-            if (categorias.length == 3) {
+            if (categorias.length == 4) {
                Pedido pedido = new Pedido();
                pedido.setID(++i);
                pedido.setCliente(categorias[0]);
                pedido.setQtdProdutos( Integer.parseInt(categorias[1]) );
                pedido.setPrazo( Integer.parseInt(categorias[2]) );
-               pedido.setPrioridade( pedido.getPrazo() );
+               pedido.setMinutoChegada( Integer.parseInt(categorias[3]) );
                lista.add(pedido);
             }
          }

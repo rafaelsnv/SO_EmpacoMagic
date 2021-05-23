@@ -1,35 +1,35 @@
 import java.io.IOException;
 
 public class App {
-   static String caminhoArquivo = "src/SO_20_DadosEmpacotadeira1.txt";
+   static String caminhoArquivo = "src/SO_20_DadosEmpacotadeira_2.txt";
 
    public static void main(String[] args) throws IOException {
-      Leitor leitor = new Leitor(caminhoArquivo);
+      Leitor ler = new Leitor(caminhoArquivo);
 
-      // Esteira comum
-      Esteira esteira = new Esteira();
+      ListaPedidos listaPedidosTodos = ler.getListaPedidos();
+      SyncList filaEmpacotar = new SyncList();
+      SyncRelatorio relatorio = new SyncRelatorio();
 
-      esteira.setListaPedidos( leitor.getListaPedidos() );
-      esteira.empacotar();
-      esteira.buildRelatorioPedidos();
-      esteira.buildRelatorioEstatistico();
+      SyncRelogio relogio = new SyncRelogio();
 
-      System.out.println("\nESTEIRA COMUM\n=============\n");
-      System.out.println( esteira.getRelatorioPedidos() );
-      System.out.println( esteira.getRelatorioEstatistico() );
+      Escalonador escalonador = new Escalonador(listaPedidosTodos, filaEmpacotar, relogio);
 
+      Esteira esteira_1 = new Esteira(1, filaEmpacotar, relatorio, listaPedidosTodos, relogio);
+      Esteira esteira_2 = new Esteira(2, filaEmpacotar, relatorio, listaPedidosTodos, relogio);
 
-      // Esteira SJF
-      EsteiraSJF esteiraSJF = new EsteiraSJF();
+      try {
+         escalonador.start();
+         esteira_1.start();
+         esteira_2.start();
 
-      esteiraSJF.setListaPedidos(leitor.getListaPedidos());
-      esteiraSJF.empacotar();
+         escalonador.join();
+         esteira_1.join();
+         esteira_2.join();
+      } catch (InterruptedException ignored) {}
 
-      esteiraSJF.buildRelatorioPedidos();
-      esteiraSJF.buildRelatorioEstatistico();
+      System.out.println("\nEmpacotamento concluído com sucesso! \n");
 
-      System.out.println("\n\nESTEIRA SJF\n===========\n");
-      System.out.println( esteiraSJF.getRelatorioPedidos() );
-      System.out.println( esteiraSJF.getRelatorioEstatistico() );
+      System.out.println(relatorio + "\n\n");
+      System.out.println(relatorio.relatorioEstatistico());
    }
 }
