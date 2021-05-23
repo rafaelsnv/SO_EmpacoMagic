@@ -49,4 +49,14 @@ public class ListaPedidos {
     public void remove(Pedido p){
         this.listaPedidos.remove(p);
     }
+
+    @Override
+    public String toString() {
+        String result = "Quantidade de pacotes total: " + qtdPacotesTotal;
+        for (Pedido p:this.listaPedidos) {
+            String aux ="\n" + p.toString();
+            result.concat(aux);
+        }
+        return result;
+    }
 }

@@ -1,13 +1,13 @@
 /**
  * Fila que irá conter somente os pedidos já prontos e aqueles que chegarem.
  */
-public class FilaEmpacotar {
+public class SyncList {
     private final ListaPedidos filaPedidos = new ListaPedidos();
 
     /**
      * Construtor da fila de Pedidos prontos para empacotamento.
      */
-    public FilaEmpacotar() {
+    public SyncList() {
     }
 
     /**
@@ -40,5 +40,9 @@ public class FilaEmpacotar {
      */
     public synchronized int getSize(){
         return this.filaPedidos.size();
+    }
+
+    public synchronized String toString(){
+        return this.filaPedidos.toString();
     }
 }
