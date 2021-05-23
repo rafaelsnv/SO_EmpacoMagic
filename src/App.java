@@ -17,19 +17,5 @@ public class App {
       System.out.println("\nESTEIRA COMUM\n=============\n");
       System.out.println( esteira.getRelatorioPedidos() );
       System.out.println( esteira.getRelatorioEstatistico() );
-
-
-      // Esteira SJF
-      EsteiraSJF esteiraSJF = new EsteiraSJF();
-
-      esteiraSJF.setListaPedidos(leitor.getListaPedidos());
-      esteiraSJF.empacotar();
-
-      esteiraSJF.buildRelatorioPedidos();
-      esteiraSJF.buildRelatorioEstatistico();
-
-      System.out.println("\n\nESTEIRA SJF\n===========\n");
-      System.out.println( esteiraSJF.getRelatorioPedidos() );
-      System.out.println( esteiraSJF.getRelatorioEstatistico() );
    }
 }
