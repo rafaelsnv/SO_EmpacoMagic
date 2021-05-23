@@ -56,7 +56,7 @@ public class ListaPedidos {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("Quantidade de pacotes total: ");
+        StringBuilder result = new StringBuilder("ORDEM DE EXECUÇÃO DOS PEDIDOS: \n");
         for (Pedido p:this.listaPedidos) {
             String aux = "\n" + p.toString();
             result.append(aux);

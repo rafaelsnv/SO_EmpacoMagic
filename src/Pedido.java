@@ -13,6 +13,7 @@ public class Pedido implements Comparable<Pedido> {
    private Horario horarioPrazo;
    private Horario horarioConclusao;
    private double tempoDeRetorno;             // segundos
+   private int esteiraUsada;                  // ID da esteira que processou o pedido
 
    /**
     * Método Construtor sem parâmetros
@@ -75,7 +76,8 @@ public class Pedido implements Comparable<Pedido> {
          this.prioridade = prazo * PRAZO_NORMAL_BASE + this.qtdProdutos;
    }
 
-   public void setConclusao(Horario conclusao) {
+   public void setConclusao(Horario conclusao, int esteiraID) {
+      this.esteiraUsada = esteiraID;
       this.horarioConclusao = conclusao;
       this.tempoDeRetorno = conclusao.toSeconds() - this.horaDeChegada.toSeconds();
 
@@ -145,13 +147,14 @@ public class Pedido implements Comparable<Pedido> {
    public String toString() {
       String pedido = String.format("Pedido nº%03d | ", this.getID());
       String cliente = String.format("Cliente: %-19s | ", this.getCliente());
-      String numProdutos = String.format("Nº produtos: %4d | ", this.getQtdProdutos());
-      String horaChegada = String.format("Chegada às: %s | ", this.getHoraDeChegada().toString());
-      String horaConclusao = String.format("Concluído em: %s | ", this.getHorarioConclusao().toString());
-      String horaPrazo = String.format("Prazo às: %s | ", this.getHorarioPrazo());
+      String numProdutos = String.format("Nº prod.: %4d | ", this.getQtdProdutos());
+      String horaChegada = String.format("Chegada: %s | ", this.getHoraDeChegada().toString());
+      String horaConclusao = String.format("Conclusão: %s | ", this.getHorarioConclusao().toString());
+      String horaPrazo = String.format("Prazo: %s | ", this.getHorarioPrazo());
       String estouroPrazo = String.format("Diferença: %6.1f min | ", horarioConclusao.compareTo(horarioPrazo) / 60);
-      String retorno = String.format("Retorno: %5.1f min", this.getTempoDeRetorno() / 60);
+      String retorno = String.format("Retorno: %5.1f min | ", this.getTempoDeRetorno() / 60);
+      String esteira = String.format("Esteira %s", this.esteiraUsada);
 
-      return pedido + cliente + numProdutos + horaChegada + horaConclusao + horaPrazo + estouroPrazo + retorno;
+      return pedido + cliente + numProdutos + horaChegada + horaConclusao + horaPrazo + estouroPrazo + retorno + esteira;
    }
 }

@@ -8,7 +8,7 @@ public class App {
 
       ListaPedidos listaPedidosTodos = ler.getListaPedidos();
       SyncList filaEmpacotar = new SyncList();
-      SyncList relatorio = new SyncList();
+      SyncRelatorio relatorio = new SyncRelatorio();
 
       SyncRelogio relogio = new SyncRelogio();
 
@@ -29,8 +29,9 @@ public class App {
          esteira_2.join();
       } catch (InterruptedException ignored) {}
 
-      System.out.println("Empacotamento concluído com sucesso! \n\n");
+      System.out.println("\nEmpacotamento concluído com sucesso! \n");
 
-      System.out.println(relatorio);
+      System.out.println(relatorio + "\n\n");
+      System.out.println(relatorio.relatorioEstatistico());
    }
 }

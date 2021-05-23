@@ -3,12 +3,13 @@
  * Fila que irá conter somente os pedidos já prontos e aqueles que chegarem.
  */
 public class SyncList {
-    private final ListaPedidos filaPedidos = new ListaPedidos();
+    protected final ListaPedidos filaPedidos = new ListaPedidos();
 
     /**
      * Construtor da fila de Pedidos prontos para empacotamento.
      */
     public SyncList() {
+
     }
 
     /**
