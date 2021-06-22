@@ -34,7 +34,6 @@ public class SyncList {
     public synchronized Pedido getFirst(){
         Pedido pedido = this.filaPedidos.get(0);
         this.filaPedidos.remove(pedido);
-
         return pedido;
     }
 
