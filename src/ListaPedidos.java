@@ -4,6 +4,7 @@ import java.util.Collections;
 public class ListaPedidos {
     private final ArrayList<Pedido> listaPedidos;
     private int qtdPacotesTotal;
+    
 
     /**
      * Construtor sem parâmetros

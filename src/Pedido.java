@@ -14,6 +14,7 @@ public class Pedido implements Comparable<Pedido> {
    private Horario horarioConclusao;
    private double tempoDeRetorno;             // segundos
    private int esteiraUsada;                  // ID da esteira que processou o pedido
+   private int codProduto;
 
    /**
     * Método Construtor sem parâmetros
@@ -37,12 +38,13 @@ public class Pedido implements Comparable<Pedido> {
     * @param prazo            O prazo para empacotamento
     * @param minutoChegada    Minuto em que o pedido chegou após o início às 08:00
     */
-   public Pedido(int id, String cliente, int qtdProdutos, int prazo, int minutoChegada) {
+   public Pedido(int id, String cliente, int qtdProdutos, int prazo, int minutoChegada, int codProduto) {
       this.setID(id);
       this.setCliente(cliente);
       this.setQtdProdutos(qtdProdutos);
       this.setPrazo(prazo);
       this.setMinutoChegada(minutoChegada);
+      this.setCodProduto(codProduto);
       this.tempoDeRetorno = -1;
       this.horarioConclusao = new Horario(0);
       this.horarioPrazo = new Horario(0);
@@ -127,6 +129,14 @@ public class Pedido implements Comparable<Pedido> {
       return horaDeChegada;
    }
 
+   public int getCodProduto() {
+      return codProduto;
+   }
+
+   public void setCodProduto(int codProduto) {
+      this.codProduto = codProduto;
+   }
+
    /**
     * Método de comparação entre dois Pedidos
     *
@@ -157,4 +167,5 @@ public class Pedido implements Comparable<Pedido> {
 
       return pedido + cliente + numProdutos + esteira + horaChegada + horaConclusao + horaPrazo + estouroPrazo + retorno;
    }
+ 
 }

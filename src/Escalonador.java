@@ -36,4 +36,5 @@ public class Escalonador extends Thread{
         }
         System.out.println("Escalonador finalizou!");
     }
+
 }
