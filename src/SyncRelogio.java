@@ -12,4 +12,5 @@ public class SyncRelogio {
    public synchronized Horario getHorarioGeral() {
       return this.horarioGeral;
    }
+
 }

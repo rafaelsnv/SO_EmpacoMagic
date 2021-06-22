@@ -56,4 +56,5 @@ public class SyncRelatorio extends SyncList {
 
       return builder.toString();
    }
+
 }

@@ -167,9 +167,5 @@ public class Pedido implements Comparable<Pedido> {
 
       return pedido + cliente + numProdutos + esteira + horaChegada + horaConclusao + horaPrazo + estouroPrazo + retorno;
    }
-
-  
-
-  
-   
+ 
 }

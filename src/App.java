@@ -1,5 +1,4 @@
 import java.io.IOException;
-
 public class App {
    static String caminhoArquivo = "src/SO_20_DadosEmpacotadeira_3.txt";
 
