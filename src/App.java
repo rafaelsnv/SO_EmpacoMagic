@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 public class App {
-   static String caminhoArquivo = "src/SO_20_DadosEmpacotadeira_2.txt";
+   static String caminhoArquivo = "src/SO_20_DadosEmpacotadeira_3.txt";
 
    public static void main(String[] args) throws IOException {
       Leitor ler = new Leitor(caminhoArquivo);

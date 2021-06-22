@@ -45,13 +45,14 @@ public class Leitor {
       for (String linha; (linha = br.readLine()) != null;) {
          if (!linha.equals("")) {
             categorias = linha.split(";");
-            if (categorias.length == 4) {
+            if (categorias.length == 5) {
                Pedido pedido = new Pedido();
                pedido.setID(++i);
                pedido.setCliente(categorias[0]);
                pedido.setQtdProdutos( Integer.parseInt(categorias[1]) );
                pedido.setPrazo( Integer.parseInt(categorias[2]) );
                pedido.setMinutoChegada( Integer.parseInt(categorias[3]) );
+               pedido.setCodProduto( Integer.parseInt(categorias[4]));
                lista.add(pedido);
             }
          }
