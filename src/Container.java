@@ -1,28 +1,22 @@
 public class Container {
-    private static final int MAX_VOLUME_CONTEINER = 1000000; // valores em cm³
-    private static final int trocaConteiner = 30; // valores em segundos
-    private int idade = 0;
-    private int qtdMaxProdutos = 0;
-    private int qtdAtualProdutos = 0;
-    private int ID;
-
-    /**
-     * Construtor Vazio ID = 0 listaPedidosUnicos = vazia
-     */
-    public Container() {
-        this.ID = 0;
-    }
+    private static final int MAX_VOLUME_CONTAINER = 1000000; // valores em cm³
+    private static final int TEMPO_TROCA_CONTAINER = 30; // valores em segundos
+    private int idade;
+    private final int qtdMaxProdutos;
+    private int qtdAtualProdutos;
+    private int produtoID;
 
     /**
      * Construtor com parâmetros
      * 
      * @param ID     ID de identificação do conteiner. Ideia inicial do ID ser =
      *               código do produto
-     * @param volume (int) - Volume do produto
+     * @param produtoVol (int) - Volume do produto
      */
-    public Container(int ID, int volume) {
-        this.ID = ID;
-        qtdMaxProdutos(volume);
+    public Container(int produtoID, int produtoVol) {
+        this.produtoID = produtoID;
+        this.idade = 0;
+        this.qtdMaxProdutos = this.qtdAtualProdutos = MAX_VOLUME_CONTAINER / produtoVol;
     }
 
     /**
@@ -31,30 +25,19 @@ public class Container {
      * @return False != 0
      */
     public boolean isEmpty() {
-        if (this.qtdAtualProdutos == 0)
-            return true;
-        else
-            return false;
+        return this.qtdAtualProdutos == 0;
     }
 
-    public int getID() {
-        return ID;
+    public int getProdutoID() {
+        return this.produtoID;
     }
 
-    public void setID(int iD) {
-        ID = iD;
+    public void setProdutoID(int produtoID) {
+        this.produtoID = produtoID;
     }
 
-    public int getTrocaConteiner() {
-        return trocaConteiner;
-    }
-
-    public static int getMaxVolumeConteiner() {
-        return MAX_VOLUME_CONTEINER;
-    }
-
-    public int getQtdMaxProdutos() {
-        return this.qtdMaxProdutos;
+    public int getTempoTroca() {
+        return TEMPO_TROCA_CONTAINER;
     }
 
     public int getQtdAtualProdutos() {
@@ -62,38 +45,11 @@ public class Container {
     }
 
     /**
-     * @param qtd (int) - Quantidade de produtos a ser inserida
-     * 
-     *            Tive a seguinte ideia: A gente pode usar só esse método para
-     *            modificar a qtdAtual. Passando pra ele um número positivo em caso
-     *            de refresh, ou um número negativo em caso de retirada de produtos.
-     * 
-     *            By: João
-     * 
-     */
-    public void setQtdAtualProdutos(int qtd) {
-        this.qtdAtualProdutos += qtd;
-    }
-
-    /**
      * Método para inserir a quantidade máxima de produtos no conteiner
      */
-    public boolean refreshConteiner() {
-        setQtdAtualProdutos(this.qtdMaxProdutos);
-        if (this.qtdAtualProdutos > this.qtdMaxProdutos) { // Somente um teste para ficarmos cientes em caso de falhas
-            System.out.println("Refresh com erros, favor verificar " + " QtdAtual: " + this.qtdAtualProdutos);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Método para calcular a quantidade máxima de produtos suportada pelo conteiner
-     * 
-     * @param volume (int) - Volume do produto
-     */
-    public void qtdMaxProdutos(int volume) {
-        this.qtdMaxProdutos = MAX_VOLUME_CONTEINER / volume;
+    public void refresh() {
+        this.qtdAtualProdutos = this.qtdMaxProdutos;
+        // atualizar idade?
     }
 
     /**
@@ -101,12 +57,9 @@ public class Container {
      */
     public void increaseIdade() {
         this.idade += 8;
-
         if (this.idade > 15)
             System.out.println("Idade inválida!"); // Somente um teste para sermos informados em caso de falha
-
-        System.out.println("Conteiner " + this.ID + " idade: " + this.idade);
-
+        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
     }
 
     /**
@@ -114,8 +67,7 @@ public class Container {
      */
     public void decreaseIdade() {
         this.idade /= 2;
-
-        System.out.println("Conteiner " + this.ID + " idade: " + this.idade);
+        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
     }
 
     public int getIdade() {
