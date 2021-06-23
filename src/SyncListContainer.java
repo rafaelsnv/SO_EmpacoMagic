@@ -6,15 +6,17 @@ public class SyncListContainer {
 
     private ArrayList<Container>  listaGeral;
     private List<Container> listaUsando;
+    private int numeroUsos;
 
     /**
      * Construtor com parâmetros
      * @param qtdProdutos a quantidade total de tipos de produtos
      */
     public SyncListContainer(int qtdProdutos ) {
+        this.numeroUsos = 0;
         this.listaGeral =  new ArrayList<Container>(qtdProdutos);
-        
-        List<Container> lista = new ArrayList<>();
+
+        List<Container> lista = new ArrayList<>(4);
         this.listaUsando = Collections.synchronizedList(lista);
     }
 
@@ -23,6 +25,28 @@ public class SyncListContainer {
      */
     public void add(Container novo) {
         this.listaGeral.add(novo);
+    }
+
+    public Container getContainer (int idContainer){
+        if(this.numeroUsos == 4){
+            this.numeroUsos=0;
+            this.envelhecerTodos();
+        }
+
+        Container container = this.listaUsando.get(idContainer);
+
+        if (container == null){
+            swapContainer(idContainer);
+
+        }
+
+        return this.listaUsando.get(idContainer);
+    }
+
+    public void envelhecerTodos (){
+        for (Container container:listaUsando) {
+            container.decreaseIdade();
+        }
     }
 
 //    /**
@@ -36,21 +60,20 @@ public class SyncListContainer {
     /**
      * Método para trocar o container de menor idade com o requisitado
      * 
-     * @param listaGeral - Recebe a lista geral de containers para fazer o swap
      * @param idEntra    - Recebe o id do container a ser retirado da listaGeral e
      *                   inserido na this.lista
      *
      */
-    public void swapContainer(ArrayList<Container> listaGeral, int idEntra) {
+    public void swapContainer(int idEntra) {
         int menorIdade = 16;
         int idSai = 0;
 
         for (int i = 0; i < this.listaUsando.size(); i++) {// Percorre a lista de containers próximos ao braço
             Container aux = listaUsando.get(i);
             int idade = aux.getIdade();
-            if (idade < menorIdade) { // Busca pelo containers de menor idade da lista
+            if (idade < menorIdade) { // Busca pelo container de menor idade da lista
                 menorIdade = idade;
-                idSai = i; // Guarda o id do containers de menor idade
+                idSai = i; // Guarda o id do container de menor idade
             }
         }
 
@@ -58,11 +81,11 @@ public class SyncListContainer {
             Container containerSai = listaUsando.get(i);
 
             if (containerSai.getProdutoID() == idSai) {
-                for (int j = 0; j < listaGeral.size(); j++) {
-                    Container containerEntra = listaGeral.get(j);
+                for (int j = 0; j < this.listaGeral.size(); j++) {
+                    Container containerEntra = this.listaGeral.get(j);
 
                     if (containerEntra.getProdutoID() == idEntra) {
-                        listaGeral.set(j, containerSai);
+                        this.listaGeral.set(j, containerSai);
                         this.listaUsando.set(i, containerEntra);
                     }
                 }
