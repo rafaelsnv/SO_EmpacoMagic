@@ -21,6 +21,8 @@ public class Esteira extends Thread {
          Pedido pedido = pedidos.pop();
 
          int qtdProdutos = pedido.getQtdProdutos();
+
+         // START: Proteger esta transação
          Container cont = containeres.getContainer(pedido.getID());
 
          if (qtdProdutos > cont.getQtdAtualProdutos()) {
@@ -30,6 +32,7 @@ public class Esteira extends Thread {
          }
 
          cont.consumirProdutos(qtdProdutos);
+         // END: Proteger esta transação
 
          double tempoEmpacotamento = (TEMPO_EMPACOTAMENTO + TEMPO_ROLAMENTO) * pedido.getQtdPacotes();
          this.meuRelogio.addSeconds(tempoEmpacotamento);
