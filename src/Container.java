@@ -33,6 +33,10 @@ public class Container implements Comparable<Container>, Cloneable {
         return this.qtdAtualProdutos;
     }
 
+    public void consumirProdutos(int quantos) {
+        this.qtdAtualProdutos -= quantos;
+    }
+
     /**
      * Método para reabastecer container.
      */

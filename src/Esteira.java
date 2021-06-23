@@ -29,6 +29,8 @@ public class Esteira extends Thread {
             this.meuRelogio.addSeconds(cont.getTempoTroca());
          }
 
+         cont.consumirProdutos(qtdProdutos);
+
          double tempoEmpacotamento = (TEMPO_EMPACOTAMENTO + TEMPO_ROLAMENTO) * pedido.getQtdPacotes();
          this.meuRelogio.addSeconds(tempoEmpacotamento);
 
