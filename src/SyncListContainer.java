@@ -3,26 +3,80 @@ import java.util.Collections;
 import java.util.List;
 
 public class SyncListContainer {
-
-    private ArrayList<Container>  listaGeral;
-    private List<Container> listaUsando;
+    private static final int NUM_MAX_MOLDURAS = 4;
+    private final ArrayList<Container> listaGeral;
+    private final List<Container> listaUsando;
+    private int numeroUsos;
 
     /**
      * Construtor com parâmetros
      * @param qtdProdutos a quantidade total de tipos de produtos
      */
     public SyncListContainer(int qtdProdutos ) {
-        this.listaGeral =  new ArrayList<Container>(qtdProdutos);
-        
-        List<Container> lista = new ArrayList<>();
+        this.numeroUsos = 0;
+        this.listaGeral =  new ArrayList<>(qtdProdutos);
+
+        List<Container> lista = new ArrayList<>(NUM_MAX_MOLDURAS);
         this.listaUsando = Collections.synchronizedList(lista);
     }
 
     /**
      * Adiciona um container na lista
      */
-    public void add(Container novo) {
+    public synchronized void add(Container novo) {
         this.listaGeral.add(novo);
+    }
+
+    private Container get(int id) {
+        if (this.listaUsando.size() == 0)
+            return null;
+        else
+            for (Container container : this.listaUsando) {
+                if (container.equals(id))
+                    return container;
+            }
+
+        return null;
+    }
+
+    private void passarEpoca() {
+        if (this.numeroUsos == 4) {
+            this.numeroUsos = 0;
+            this.envelhecerTodos();
+        }
+    }
+
+    private Container clonar(int idContainer) throws CloneNotSupportedException {
+        Container cont = this.listaGeral.get(idContainer - 1);
+        Container clone = cont.clone();
+        return clone;
+    }
+
+    public synchronized Container getContainer(int idContainer) throws CloneNotSupportedException {
+        this.numeroUsos++;
+        this.passarEpoca();
+
+        Container container = this.get(idContainer);
+
+        // Falta de página
+        if (container == null)
+            if (this.listaUsando.size() < NUM_MAX_MOLDURAS) {
+                Container clone = this.clonar(idContainer);
+                this.listaUsando.add(clone);
+                return clone;
+            } else {
+                Container novo = this.swapContainer(idContainer);
+                return novo;
+            }
+        else
+            container.increaseIdade();
+
+        return container;
+    }
+
+    private void envelhecerTodos (){
+        for (Container container:listaUsando)
+            container.decreaseIdade();
     }
 
 //    /**
@@ -34,58 +88,36 @@ public class SyncListContainer {
 //    }
 
     /**
-     * Método para trocar o container de menor idade com o requisitado
-     * 
-     * @param listaGeral - Recebe a lista geral de containers para fazer o swap
-     * @param idEntra    - Recebe o id do container a ser retirado da listaGeral e
+     * Método para trocar o conteiner de menor idade com o requisitado
+     *
+     * @param listaGeral - Recebe a lista geral de conteiners para fazer o swap
+     * @param idEntra    - Recebe o id do Conteiner a ser retirado da listaGeral e
      *                   inserido na this.lista
      *
      */
-    public void swapContainer(ArrayList<Container> listaGeral, int idEntra) {
+    public synchronized Container swapContainer(int idEntra) throws CloneNotSupportedException {
         int menorIdade = 16;
         int idSai = 0;
 
-        for (int i = 0; i < this.listaUsando.size(); i++) {// Percorre a lista de containers próximos ao braço
-            Container aux = listaUsando.get(i);
+        for (int i = 0; i < this.listaUsando.size(); i++) {// Percorre a lista de conteiners próximos ao braço
+            Container aux = this.listaUsando.get(i);
             int idade = aux.getIdade();
-            if (idade < menorIdade) { // Busca pelo containers de menor idade da lista
+            if (idade < menorIdade) { // Busca pelo Conteiner de menor idade da lista
                 menorIdade = idade;
-                idSai = i; // Guarda o id do containers de menor idade
+                idSai = i; // Guarda o id do conteiner de menor idade
             }
         }
 
-        for (int i = 0; i < this.listaUsando.size(); i++) { // Percorre a lista dos containers próximos aos braços
-            Container containerSai = listaUsando.get(i);
-
-            if (containerSai.getProdutoID() == idSai) {
-                for (int j = 0; j < listaGeral.size(); j++) {
-                    Container containerEntra = listaGeral.get(j);
-
-                    if (containerEntra.getProdutoID() == idEntra) {
-                        listaGeral.set(j, containerSai);
-                        this.listaUsando.set(i, containerEntra);
-                    }
-                }
+        for (int i = 0; i < this.listaUsando.size(); i++) {
+            Container contSai = this.listaUsando.get(i);
+            if(contSai.equals(idSai)) {
+                this.listaUsando.remove(contSai);
+                Container entra = this.clonar(idEntra);
+                this.listaUsando.add(entra);
+                return contSai;
             }
         }
-    }
 
-    /**
-     * 
-     * @return Retorna o id do container com a menor idade
-     */
-    public synchronized int younger() {
-        return -1;
+        return null;
     }
-
-    /**
-     * Método para repor os produtos do container
-     * 
-     * @param tipo (int) recebe o tipo do container a ser reposto
-     * @return
-     */
-    public synchronized boolean refresh(int tipo) {
-        return false;
-    }
-
 }

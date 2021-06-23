@@ -1,4 +1,4 @@
-public class Container implements Comparable<Container> {
+public class Container implements Comparable<Container>, Cloneable {
     private static final int MAX_VOLUME_CONTAINER = 1000000; // valores em cm³
     private static final int TEMPO_TROCA_CONTAINER = 30; // valores em segundos
     private final int produtoID;
@@ -7,22 +7,13 @@ public class Container implements Comparable<Container> {
     private int idade;
 
     /**
-     * Construtor para comparação de IDs
-     * @param produtoID Tipo de produto contido no container.
-     */
-    public Container(int produtoID) {
-        this.produtoID = produtoID;
-        this.qtdMaxProdutos = 0;
-    }
-
-    /**
      * Construtor com parâmetros para cálculo de quantidade de produtos.
      * @param produtoID Tipo de produto contido no container.
      * @param produtoVol (int) - Volume do produto
      */
     public Container(int produtoID, int produtoVol) {
         this.produtoID = produtoID;
-        this.idade = 0;
+        this.idade = 8;
         this.qtdMaxProdutos = this.qtdAtualProdutos = MAX_VOLUME_CONTAINER / produtoVol;
     }
 
@@ -38,12 +29,12 @@ public class Container implements Comparable<Container> {
         return this.produtoID;
     }
 
-    public int getTempoTroca() {
-        return TEMPO_TROCA_CONTAINER;
-    }
-
     public int getQtdAtualProdutos() {
         return this.qtdAtualProdutos;
+    }
+
+    public void consumirProdutos(int quantos) {
+        this.qtdAtualProdutos -= quantos;
     }
 
     /**
@@ -51,7 +42,10 @@ public class Container implements Comparable<Container> {
      */
     public void reabastecer() {
         this.qtdAtualProdutos = this.qtdMaxProdutos;
-        // atualizar idade?
+    }
+
+    public int getTempoTroca() {
+        return TEMPO_TROCA_CONTAINER;
     }
 
     /**
@@ -61,7 +55,7 @@ public class Container implements Comparable<Container> {
         this.idade += 8;
         if (this.idade > 15)
             System.out.println("Idade inválida!"); // Somente um teste para sermos informados em caso de falha
-        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
+//        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
     }
 
     /**
@@ -69,7 +63,7 @@ public class Container implements Comparable<Container> {
      */
     public void decreaseIdade() {
         this.idade /= 2;
-        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
+//        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
     }
 
     /**
@@ -90,16 +84,19 @@ public class Container implements Comparable<Container> {
         return this.idade - outro.idade;
     }
 
-    @Override
-    public boolean equals(Object outro) {
-        if(this == outro)
-            return true;
-        if(outro ==  null)
-            return false;
-        if(this.getClass() != outro.getClass())
-            return false;
+    public boolean equals(int id) {
+        return this.produtoID == id;
+    }
 
-        Container container = (Container) outro;
-        return this.produtoID == container.produtoID;
+    @Override
+    public String toString() {
+        return "Container " + this.produtoID;
+    }
+
+    @Override
+    public Container clone() throws CloneNotSupportedException {
+//        Container novo = new Container(this.produtoID, this.produtoVol);
+//        return novo;
+        return (Container) super.clone();
     }
 }
