@@ -1,23 +1,28 @@
-public class SyncRelatorio extends SyncList {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class SyncRelatorio {
+   private final List<Pedido> syncList;
    private double tempoRetornoAcumulado = 0;
 
    public SyncRelatorio() {
-      super();
+      List<Pedido> lista = new ArrayList<>();
+      this.syncList = Collections.synchronizedList(lista);
    }
 
-   @Override
-   public synchronized void addToList(Pedido pedido){
-      this.filaPedidos.add(pedido);
+   public void append(Pedido pedido){
+      this.syncList.add(pedido);
       this.tempoRetornoAcumulado += pedido.getTempoDeRetorno();
    }
 
    public double getTempoRetornoMedio() {
-      return this.tempoRetornoAcumulado / this.filaPedidos.size();
+      return this.tempoRetornoAcumulado / this.syncList.size();
    }
 
    public int getNumAntes12h() {
       int numPacotes = 0;
-      for(Pedido pedido : this.filaPedidos.getListaPedidos()) {
+      for(Pedido pedido : this.syncList) {
          Horario conclusao = pedido.getHorarioConclusao();
          Horario meioDia = new Horario(43200);
          if (conclusao.compareTo(meioDia) <= 0)
@@ -28,7 +33,7 @@ public class SyncRelatorio extends SyncList {
 
    public int getNumAtrasos() {
       int numAtrasos = 0;
-      for(Pedido pedido : this.filaPedidos.getListaPedidos()) {
+      for(Pedido pedido : this.syncList) {
          Horario conclusao = pedido.getHorarioConclusao();
          Horario esperado = pedido.getHorarioPrazo();
          if (conclusao.compareTo(esperado) > 0)
@@ -38,7 +43,7 @@ public class SyncRelatorio extends SyncList {
    }
 
    public Horario getHorarioFinalizacao() {
-      Pedido ultimoPedido = this.filaPedidos.get(this.filaPedidos.size() - 1);
+      Pedido ultimoPedido = this.syncList.get(this.syncList.size() - 1);
       return ultimoPedido.getHorarioConclusao();
    }
 
@@ -48,13 +53,10 @@ public class SyncRelatorio extends SyncList {
       String numAntes12h = String.format("Nº de pacotes antes das 12h: %d\n", this.getNumAntes12h());
       String atrasos = String.format("Nº de atrasos: %d\n", this.getNumAtrasos());
 
-      StringBuilder builder = new StringBuilder("RELATÓRIO ESTATÍSTICO:\n");
-      builder.append(finalizacao);
-      builder.append(retorno);
-      builder.append(numAntes12h);
-      builder.append(atrasos);
-
-      return builder.toString();
+      return "RELATÓRIO ESTATÍSTICO:\n" +
+              finalizacao +
+              retorno +
+              numAntes12h +
+              atrasos;
    }
-
 }
