@@ -5,6 +5,9 @@ public class Horario {
    private double min;
    private double sec;
 
+   public Horario () {
+      this.setHorario(28_800);
+   }
    /**
     * Método construtor
     * @param seconds (double) Horário em segundos. Zero (0) segundos representa meia-noite, 00h.

@@ -1,4 +1,4 @@
-public class Conteiner {
+public class Container {
     private static final int MAX_VOLUME_CONTEINER = 1000000; // valores em cm³
     private static final int trocaConteiner = 30; // valores em segundos
     private int idade = 0;
@@ -9,7 +9,7 @@ public class Conteiner {
     /**
      * Construtor Vazio ID = 0 listaPedidosUnicos = vazia
      */
-    public Conteiner() {
+    public Container() {
         this.ID = 0;
     }
 
@@ -20,7 +20,7 @@ public class Conteiner {
      *               código do produto
      * @param volume (int) - Volume do produto
      */
-    public Conteiner(int ID, int volume) {
+    public Container(int ID, int volume) {
         this.ID = ID;
         qtdMaxProdutos(volume);
     }

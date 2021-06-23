@@ -1,33 +1,17 @@
 import java.io.*;
 
-public class Leitor {
+public class LeitorPedidos {
    private final String caminhoArquivo;
-   private ListaPedidos listaPedidos;
+   private SyncFila filaPedidos;
 
    /**
     * Método construtor
     * @param caminho Caminho do arquivo.
     * @throws IOException Erro de leitura.
     */
-   public Leitor (String caminho) throws IOException {
+   public LeitorPedidos(String caminho) throws IOException {
       this.caminhoArquivo = caminho;
       this.lerArquivo();
-   }
-
-   /**
-    * Deposita lista de pedidos no objeto
-    * @param listaPedidos (ListaPedidos) Lista de pedidos a ser adicionada.
-    */
-   private void setListaPedidos(ListaPedidos listaPedidos) {
-      this.listaPedidos = listaPedidos;
-   }
-
-   /**
-    * Retorna a lista de pedidos lida
-    * @return (ListaPedidos) Lista de pedidos do objeto.
-    */
-   public ListaPedidos getListaPedidos() {
-      return this.listaPedidos;
    }
 
    /**
@@ -39,7 +23,7 @@ public class Leitor {
       BufferedReader br = new BufferedReader(new FileReader(arquivoPedidos));
 
       String[] categorias;
-      ListaPedidos lista = new ListaPedidos();
+      SyncFila fila = new SyncFila();
       int i = 0;
 
       for (String linha; (linha = br.readLine()) != null;) {
@@ -51,15 +35,23 @@ public class Leitor {
                pedido.setCliente(categorias[0]);
                pedido.setQtdProdutos( Integer.parseInt(categorias[1]) );
                pedido.setPrazo( Integer.parseInt(categorias[2]) );
-               pedido.setMinutoChegada( Integer.parseInt(categorias[3]) );
+               pedido.setHoraChegada( Integer.parseInt(categorias[3]) );
                pedido.setCodProduto( Integer.parseInt(categorias[4]));
-               lista.add(pedido);
+               fila.push(pedido);
             }
          }
       }
 
-      this.setListaPedidos(lista);
+      fila.sort();
+      this.filaPedidos = fila;
       br.close();
    }
-   
+
+   /**
+    * Retorna a lista de pedidos lida
+    * @return (ListaPedidos) Lista de pedidos do objeto.
+    */
+   public SyncFila getFilaPedidos() {
+      return this.filaPedidos;
+   }
 }

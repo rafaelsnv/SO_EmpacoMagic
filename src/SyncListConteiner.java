@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class SyncListConteiner {
 
-    private ArrayList<Conteiner> lista;
+    private ArrayList<Container> lista;
 
     /**
      * Adiciona um conteiner na lista
@@ -10,14 +10,14 @@ public class SyncListConteiner {
      * @return
      */
     public synchronized boolean addConteiner() {
-
+        return false;
     }
 
     /**
      * Verifica se o conteiner em questão está zerado de produtos
      */
     public synchronized boolean isEmpty() {
-
+        return false;
     }
 
     /**
@@ -28,12 +28,12 @@ public class SyncListConteiner {
      *                   inserido na this.lista
      * 
      */
-    public synchronized void swapConteiner(ArrayList<Conteiner> listaGeral, int idEntra) {
+    public synchronized void swapConteiner(ArrayList<Container> listaGeral, int idEntra) {
         int menorIdade = 16;
         int idSai = 0;
 
         for (int i = 0; i < this.lista.size(); i++) {// Percorre a lista de conteiners próximos ao braço
-            Conteiner aux = lista.get(i);
+            Container aux = lista.get(i);
             int idade = aux.getIdade();
             if (idade < menorIdade) { // Busca pelo Conteiner de menor idade da lista
                 menorIdade = idade;
@@ -42,11 +42,11 @@ public class SyncListConteiner {
         }
 
         for (int i = 0; i < this.lista.size(); i++) { // Percorre a lista dos conteiners próximos aos braços
-            Conteiner conteinerSai = lista.get(i);
+            Container conteinerSai = lista.get(i);
 
             if (conteinerSai.getID() == idSai) {
                 for (int j = 0; j < listaGeral.size(); j++) {
-                    Conteiner conteinerEntra = listaGeral.get(j);
+                    Container conteinerEntra = listaGeral.get(j);
 
                     if (conteinerEntra.getID() == idEntra) {
                         listaGeral.set(j, conteinerSai);
@@ -62,7 +62,7 @@ public class SyncListConteiner {
      * @return Retorna o id do conteiner com a menor idade
      */
     public synchronized int younger() {
-
+        return -1;
     }
 
     /**
@@ -72,7 +72,7 @@ public class SyncListConteiner {
      * @return
      */
     public synchronized boolean refresh(int tipo) {
-
+        return false;
     }
 
 }

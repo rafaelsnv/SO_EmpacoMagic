@@ -47,11 +47,21 @@ public class SyncRelatorio {
       return ultimoPedido.getHorarioConclusao();
    }
 
+   @Override
+   public String toString() {
+      StringBuilder result = new StringBuilder("ORDEM DE EXECUÇÃO DOS PEDIDOS: \n");
+      for (Pedido pd : this.syncList) {
+         String aux = "\n" + pd.toString();
+         result.append(aux);
+      }
+      return result.toString();
+   }
+
    public String relatorioEstatistico() {
       String finalizacao = String.format("Finalizado às: %s\n", getHorarioFinalizacao().toString());
-      String retorno = String.format("Tempo médio de retorno: %.1f min\n", this.getTempoRetornoMedio() / 60);
-      String numAntes12h = String.format("Nº de pacotes antes das 12h: %d\n", this.getNumAntes12h());
-      String atrasos = String.format("Nº de atrasos: %d\n", this.getNumAtrasos());
+      String retorno = String.format("Tempo médio de retorno: %.1f min\n", getTempoRetornoMedio() / 60);
+      String numAntes12h = String.format("Nº de pacotes antes das 12h: %d\n", getNumAntes12h());
+      String atrasos = String.format("Nº de atrasos: %d\n", getNumAtrasos());
 
       return "RELATÓRIO ESTATÍSTICO:\n" +
               finalizacao +
