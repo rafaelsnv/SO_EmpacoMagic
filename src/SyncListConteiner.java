@@ -24,8 +24,6 @@ public class SyncListConteiner {
      * Método para trocar o conteiner de menor idade com o requisitado
      * 
      * @param listaGeral - Recebe a lista geral de conteiners para fazer o swap
-     * @param idSai      - Recebe o id do Conteiner a ser retirado da this.lista e
-     *                   inserido na listaGeral
      * @param idEntra    - Recebe o id do Conteiner a ser retirado da listaGeral e
      *                   inserido na this.lista
      * 
