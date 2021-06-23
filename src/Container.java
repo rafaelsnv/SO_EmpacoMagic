@@ -61,7 +61,7 @@ public class Container implements Comparable<Container> {
         this.idade += 8;
         if (this.idade > 15)
             System.out.println("Idade inválida!"); // Somente um teste para sermos informados em caso de falha
-        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
+//        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
     }
 
     /**
@@ -69,7 +69,7 @@ public class Container implements Comparable<Container> {
      */
     public void decreaseIdade() {
         this.idade /= 2;
-        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
+//        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
     }
 
     /**
@@ -101,5 +101,10 @@ public class Container implements Comparable<Container> {
 
         Container container = (Container) outro;
         return this.produtoID == container.produtoID;
+    }
+
+    @Override
+    public String toString() {
+        return "Container " + this.produtoID;
     }
 }
