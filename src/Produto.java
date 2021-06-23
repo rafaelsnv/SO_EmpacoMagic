@@ -4,10 +4,11 @@ public class Produto {
 
    /**
     * Método Construtor
-    * @param qualTipo O tipo de produto
+    * 
+    * @param qualTipo   O tipo de produto
     * @param qualVolume O volume do produto
     */
-   public Produto (String qualTipo, double qualVolume){
+   public Produto(String qualTipo, double qualVolume) {
       this.tipo = qualTipo;
       this.volume = qualVolume;
    }
@@ -30,13 +31,12 @@ public class Produto {
 
    /**
     * Método conversor para impressão
+    * 
     * @return Uma string com os valores armazenados no objeto
     */
    @Override
    public String toString() {
-      return "Produto"+
-              "\ntipo: " + tipo +
-              "\nvolume: " + volume;
+      return "Produto" + "\ntipo: " + tipo + "\nvolume: " + volume;
    }
 
 }
