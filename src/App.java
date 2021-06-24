@@ -1,19 +1,23 @@
 import java.io.IOException;
+import java.util.concurrent.Semaphore;
 
 public class App {
-   static String caminhoArquivo = "src/SO_20_DadosEmpacotadeira_3.txt";
+   static String caminhoPedidos = "src/SO_20_DadosEmpacotadeira_3.txt";
+   static String caminhoContainers = "src/SO_20_DadosProdutos.txt";
 
    public static void main(String[] args) throws IOException {
-      LeitorPedidos ler = new LeitorPedidos(caminhoArquivo);
+      LeitorPedidos readPedidos = new LeitorPedidos(caminhoPedidos);
+      LeitorContainers readContainers = new LeitorContainers(caminhoContainers);
 
-      SyncFila filaPedidos = ler.getFilaPedidos();
       SyncRelatorio relatorio = new SyncRelatorio();
-      SyncListContainer containeres = new SyncListContainer();
+      SyncListContainer containeres = readContainers.getListaContainers();
+      Semaphore mutex = new Semaphore(1);
 
-      System.out.println(relatorio);
+      SyncFila filaPedidos = readPedidos.getFilaPedidos();
+      int numOp = filaPedidos.size();
 
-      Esteira esteira_1 = new Esteira(1, filaPedidos, relatorio, containeres);
-      Esteira esteira_2 = new Esteira(2, filaPedidos, relatorio, containeres);
+      Esteira esteira_1 = new Esteira(1, filaPedidos, relatorio, containeres, mutex, numOp/2);
+      Esteira esteira_2 = new Esteira(2, filaPedidos, relatorio, containeres, mutex, numOp - numOp/2);
 
       try {
          esteira_1.start();

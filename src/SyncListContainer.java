@@ -52,6 +52,15 @@ public class SyncListContainer {
         return clone;
     }
 
+
+    public boolean exists(int idContainer) {
+        for (Container container : this.listaUsando) {
+            if (container.equals(idContainer))
+                return true;
+        }
+        return false;
+    }
+
     public synchronized Container getContainer(int idContainer) throws CloneNotSupportedException {
         this.numeroUsos++;
         this.passarEpoca();

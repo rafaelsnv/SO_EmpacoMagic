@@ -1,3 +1,5 @@
+import java.util.concurrent.Semaphore;
+
 public class Esteira extends Thread {
    private static final double TEMPO_ROLAMENTO = 0.5;    // segundos
    private static final double TEMPO_EMPACOTAMENTO = 5;  // segundos
@@ -5,34 +7,51 @@ public class Esteira extends Thread {
    private final int meuID;
    private final SyncFila pedidos;
    private final SyncRelatorio relatorio;
-   private final SyncListContainer containeres;
+   private final SyncListContainer listaContainers;
+   private final Semaphore mutex;
+   private final int numOp;
    public final Horario meuRelogio;
 
-   public Esteira(int ID, SyncFila pedidos, SyncRelatorio relatorio, SyncListContainer containeres) {
+   public Esteira(int ID, SyncFila pedidos, SyncRelatorio relatorio, SyncListContainer containeres, Semaphore mutex, int numOp) {
       this.meuID = ID;
       this.pedidos = pedidos;
       this.relatorio = relatorio;
-      this.containeres = containeres;
+      this.listaContainers = containeres;
       this.meuRelogio = new Horario();
+      this.numOp = numOp;
+      this.mutex = mutex;
    }
 
-   public void empacotar() throws CloneNotSupportedException {
+   public void empacotar() throws CloneNotSupportedException, InterruptedException {
       if(pedidos.size() > 0) {
          Pedido pedido = pedidos.pop();
 
          int qtdProdutos = pedido.getQtdProdutos();
 
-         // START: Proteger esta transação
-         Container cont = containeres.getContainer(pedido.getID());
+         // START: Transação protegida
+         try {
+            mutex.acquire();
+               boolean containerExiste = listaContainers.exists(pedido.getCodProduto());
+               Container cont = listaContainers.getContainer(pedido.getCodProduto());
 
-         if (qtdProdutos > cont.getQtdAtualProdutos()) {
-            qtdProdutos -= cont.getQtdAtualProdutos();
-            cont.reabastecer();
-            this.meuRelogio.addSeconds(cont.getTempoTroca());
+               if (containerExiste) {
+                  if (qtdProdutos > cont.getQtdAtualProdutos()) {
+                     qtdProdutos -= cont.getQtdAtualProdutos();
+                     cont.reabastecer();
+                     this.meuRelogio.addSeconds(cont.getTempoTroca());
+                  }
+               } else {
+                  this.meuRelogio.addSeconds(cont.getTempoTroca());
+               }
+
+               cont.consumirProdutos(qtdProdutos);
+            mutex.release();
+
+         } catch (InterruptedException ie) {
+            System.out.println("Thread interrompida");
+            throw new InterruptedException();
          }
-
-         cont.consumirProdutos(qtdProdutos);
-         // END: Proteger esta transação
+         // END: Transação protegida
 
          double tempoEmpacotamento = (TEMPO_EMPACOTAMENTO + TEMPO_ROLAMENTO) * pedido.getQtdPacotes();
          this.meuRelogio.addSeconds(tempoEmpacotamento);
@@ -44,7 +63,13 @@ public class Esteira extends Thread {
    }
 
    public void run() {
-
+      for(int i=0; i < this.numOp; i++) {
+         try {
+            this.empacotar();
+         } catch (CloneNotSupportedException | InterruptedException e) {
+            e.printStackTrace();
+         }
+      }
    }
 
 }
