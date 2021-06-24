@@ -3,6 +3,7 @@ public class Container implements Comparable<Container>, Cloneable {
     private static final int TEMPO_TROCA_CONTAINER = 30; // valores em segundos
     private final int produtoID;
     private final int qtdMaxProdutos;
+    private boolean foiUsado;
     private int qtdAtualProdutos;
     private int idade;
 
@@ -14,6 +15,7 @@ public class Container implements Comparable<Container>, Cloneable {
     public Container(int produtoID, int produtoVol) {
         this.produtoID = produtoID;
         this.idade = 0;
+        this.foiUsado = false;
         this.qtdMaxProdutos = this.qtdAtualProdutos = MAX_VOLUME_CONTAINER / produtoVol;
     }
 
@@ -53,6 +55,7 @@ public class Container implements Comparable<Container>, Cloneable {
      */
     public void increaseIdade() {
         this.idade += 8;
+        this.foiUsado = true;
         if (this.idade > 15)
             System.out.println("Idade inválida!"); // Somente um teste para sermos informados em caso de falha
         System.out.println("Container " + this.produtoID + " idade: " + this.idade);
@@ -63,6 +66,7 @@ public class Container implements Comparable<Container>, Cloneable {
      */
     public void decreaseIdade() {
         this.idade /= 2;
+        this.foiUsado = false;
 //        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
     }
 
@@ -72,6 +76,10 @@ public class Container implements Comparable<Container>, Cloneable {
      */
     public int getIdade() {
         return this.idade;
+    }
+
+    public boolean foiUsado() {
+        return this.foiUsado;
     }
 
     /**
@@ -90,7 +98,7 @@ public class Container implements Comparable<Container>, Cloneable {
 
     @Override
     public String toString() {
-        return "Container " + this.produtoID;
+        return "Container " + this.produtoID + " | qdtProd = " + this.qtdAtualProdutos + " | Idade = " + this.idade;
     }
 
     @Override

@@ -39,11 +39,13 @@ public class SyncListContainer {
         return null;
     }
 
-    private void passarEpoca() {
+    private boolean passarEpoca() {
         if (this.numeroUsos == 4) {
             this.numeroUsos = 0;
             this.envelhecerTodos();
+            return true;
         }
+        return false;
     }
 
     private Container clonar(int idContainer) throws CloneNotSupportedException {
@@ -62,8 +64,8 @@ public class SyncListContainer {
     }
 
     public synchronized Container getContainer(int idContainer) throws CloneNotSupportedException {
+        boolean passouEpoca = this.passarEpoca();
         this.numeroUsos++;
-        this.passarEpoca();
 
         Container container = this.get(idContainer);
 
@@ -71,14 +73,17 @@ public class SyncListContainer {
         if (container == null)
             if (this.listaUsando.size() < NUM_MAX_MOLDURAS) {
                 Container clone = this.clonar(idContainer);
+                clone.increaseIdade();
                 this.listaUsando.add(clone);
                 return clone;
             } else {
                 Container novo = this.swapContainer(idContainer);
+                novo.increaseIdade();
                 return novo;
             }
         else
-            container.increaseIdade();
+            if(!container.foiUsado())
+                container.increaseIdade();
 
         return container;
     }
@@ -119,6 +124,7 @@ public class SyncListContainer {
 
         for (int i = 0; i < this.listaUsando.size(); i++) {
             Container contSai = this.listaUsando.get(i);
+            System.out.println(contSai);
             if(contSai.equals(idSai)) {
                 this.listaUsando.remove(contSai);
                 Container entra = this.clonar(idEntra);
