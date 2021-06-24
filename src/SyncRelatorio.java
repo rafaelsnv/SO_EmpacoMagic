@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SyncRelatorio {
+   private static final double HORARIO_FINALIZACAO = 61_200;
    private final List<Pedido> syncList;
    private double tempoRetornoAcumulado = 0;
 
@@ -43,9 +44,36 @@ public class SyncRelatorio {
    }
 
    public Horario getHorarioFinalizacao() {
-      Pedido ultimoPedido = this.syncList.get(this.syncList.size() - 1);
-      return ultimoPedido.getHorarioConclusao();
+      Horario maiorHorario = new Horario(0);
+
+      for (Pedido pedido : this.syncList) {
+         if(pedido.getHorarioConclusao().compareTo(maiorHorario) > 0)
+            maiorHorario = pedido.getHorarioConclusao();
+      }
+
+      Horario horarioMax = new Horario(HORARIO_FINALIZACAO);
+
+      if (maiorHorario.compareTo(horarioMax) > 0) {
+         maiorHorario = horarioMax;
+      }
+
+      return maiorHorario;
    }
+
+   public int getNumNaoAtentidos() {
+      Horario horarioMax = new Horario(HORARIO_FINALIZACAO);
+      int numNaoAtendidos = 0;
+
+      for (Pedido pedido : this.syncList) {
+         if(pedido.getHorarioConclusao().compareTo(horarioMax) > 0)
+            numNaoAtendidos++;
+      }
+
+      return numNaoAtendidos;
+   }
+
+
+
 
    @Override
    public String toString() {
@@ -62,11 +90,13 @@ public class SyncRelatorio {
       String retorno = String.format("Tempo médio de retorno: %.1f min\n", getTempoRetornoMedio() / 60);
       String numAntes12h = String.format("Nº de pacotes antes das 12h: %d\n", getNumAntes12h());
       String atrasos = String.format("Nº de atrasos: %d\n", getNumAtrasos());
+      String numNaoAtendidos = String.format("Nº não atentidos: %d\n", getNumNaoAtentidos());
 
       return "RELATÓRIO ESTATÍSTICO:\n" +
               finalizacao +
               retorno +
               numAntes12h +
-              atrasos;
+              atrasos +
+              numNaoAtendidos;
    }
 }

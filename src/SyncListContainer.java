@@ -12,7 +12,7 @@ public class SyncListContainer {
      * Construtor com parâmetros
      * @param qtdProdutos a quantidade total de tipos de produtos
      */
-    public SyncListContainer(int qtdProdutos ) {
+    public SyncListContainer(int qtdProdutos) {
         this.numeroUsos = 0;
         this.listaGeral =  new ArrayList<>(qtdProdutos);
 
@@ -39,13 +39,11 @@ public class SyncListContainer {
         return null;
     }
 
-    private boolean passarEpoca() {
+    private void passarEpoca() {
         if (this.numeroUsos == 4) {
             this.numeroUsos = 0;
             this.envelhecerTodos();
-            return true;
         }
-        return false;
     }
 
     private Container clonar(int idContainer) throws CloneNotSupportedException {
@@ -64,7 +62,7 @@ public class SyncListContainer {
     }
 
     public synchronized Container getContainer(int idContainer) throws CloneNotSupportedException {
-        boolean passouEpoca = this.passarEpoca();
+        this.passarEpoca();
         this.numeroUsos++;
 
         Container container = this.get(idContainer);
@@ -79,8 +77,6 @@ public class SyncListContainer {
                 return novoCont;
             } else {
                 Container novo = this.swapContainer(idContainer);
-                if (novo == null)
-                    System.out.println("opa");
                 novo.zerarIdade();
                 novo.increaseIdade();
                 return novo;

@@ -40,15 +40,14 @@ public class Esteira extends Thread {
                while (qtdProdutos > 0) {
                   int quantidade = cont.getQtdAtualProdutos();
                   int restanteContainer = cont.consumirProdutos(qtdProdutos);
-                  qtdProdutos -= quantidade - restanteContainer;
+                  int qtdConsumida = quantidade - restanteContainer;
+                  qtdProdutos -= qtdConsumida;
                   if (restanteContainer == 0) {
                      cont.reabastecer();
                      this.meuRelogio.addSeconds(cont.getTempoTroca());
                   }
                }
-
             mutex.release();
-
          } catch (InterruptedException ie) {
             System.out.println("Thread interrompida");
             throw new InterruptedException();
@@ -72,6 +71,7 @@ public class Esteira extends Thread {
             e.printStackTrace();
          }
       }
+      System.out.println("Esteira " + this.meuID + " finalizou!");
    }
 
 }
