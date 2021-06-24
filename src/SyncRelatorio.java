@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SyncRelatorio {
@@ -77,6 +78,11 @@ public class SyncRelatorio {
 
    @Override
    public String toString() {
+      Comparator<Pedido> compararPorHorario = (Pedido p1, Pedido p2) ->
+              (int) p1.getHorarioConclusao().compareTo(p2.getHorarioConclusao());
+
+      Collections.sort(this.syncList, compararPorHorario);
+
       StringBuilder result = new StringBuilder("ORDEM DE EXECUÇÃO DOS PEDIDOS: \n");
       for (Pedido pd : this.syncList) {
          String aux = "\n" + pd.toString();
