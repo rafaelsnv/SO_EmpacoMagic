@@ -72,12 +72,16 @@ public class SyncListContainer {
         // Falta de página
         if (container == null)
             if (this.listaUsando.size() < NUM_MAX_MOLDURAS) {
-                Container clone = this.clonar(idContainer);
-                clone.increaseIdade();
-                this.listaUsando.add(clone);
-                return clone;
+                Container novoCont = this.listaGeral.get(idContainer-1);
+                novoCont.zerarIdade();
+                novoCont.increaseIdade();
+                this.listaUsando.add(novoCont);
+                return novoCont;
             } else {
                 Container novo = this.swapContainer(idContainer);
+                if (novo == null)
+                    System.out.println("opa");
+                novo.zerarIdade();
                 novo.increaseIdade();
                 return novo;
             }
@@ -122,17 +126,13 @@ public class SyncListContainer {
             }
         }
 
-        for (int i = 0; i < this.listaUsando.size(); i++) {
-            Container contSai = this.listaUsando.get(i);
-            System.out.println(contSai);
-            if(contSai.equals(idSai)) {
-                this.listaUsando.remove(contSai);
-                Container entra = this.clonar(idEntra);
-                this.listaUsando.add(entra);
-                return contSai;
-            }
-        }
+        Container sai = this.listaUsando.get(idSai);
+        this.listaUsando.remove(sai);
+        this.listaGeral.set(sai.getProdutoID() - 1, sai);
 
-        return null;
+        Container entra = this.listaGeral.get(idEntra - 1);
+        this.listaUsando.add(entra);
+
+        return entra;
     }
 }

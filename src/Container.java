@@ -16,7 +16,8 @@ public class Container implements Comparable<Container>, Cloneable {
         this.produtoID = produtoID;
         this.idade = 0;
         this.foiUsado = false;
-        this.qtdMaxProdutos = this.qtdAtualProdutos = MAX_VOLUME_CONTAINER / produtoVol;
+        this.qtdMaxProdutos = MAX_VOLUME_CONTAINER / produtoVol;
+        this.qtdAtualProdutos = MAX_VOLUME_CONTAINER / produtoVol;
     }
 
     /**
@@ -35,8 +36,14 @@ public class Container implements Comparable<Container>, Cloneable {
         return this.qtdAtualProdutos;
     }
 
-    public void consumirProdutos(int quantos) {
-        this.qtdAtualProdutos -= quantos;
+    public int consumirProdutos(int quantos) {
+        if (this.qtdAtualProdutos < quantos) {
+            this.qtdAtualProdutos = 0;
+            return 0;
+        } else {
+            this.qtdAtualProdutos -= quantos;
+            return this.qtdAtualProdutos;
+        }
     }
 
     /**
@@ -58,7 +65,7 @@ public class Container implements Comparable<Container>, Cloneable {
         this.foiUsado = true;
         if (this.idade > 15)
             System.out.println("Idade inválida!"); // Somente um teste para sermos informados em caso de falha
-        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
+//        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
     }
 
     /**
@@ -68,6 +75,11 @@ public class Container implements Comparable<Container>, Cloneable {
         this.idade /= 2;
         this.foiUsado = false;
 //        System.out.println("Container " + this.produtoID + " idade: " + this.idade);
+    }
+
+
+    public void zerarIdade() {
+        this.idade = 0;
     }
 
     /**

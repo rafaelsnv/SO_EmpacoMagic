@@ -34,17 +34,19 @@ public class Esteira extends Thread {
                boolean containerExiste = listaContainers.exists(pedido.getCodProduto());
                Container cont = listaContainers.getContainer(pedido.getCodProduto());
 
-               if (containerExiste) {
-                  if (qtdProdutos > cont.getQtdAtualProdutos()) {
-                     qtdProdutos -= cont.getQtdAtualProdutos();
+               if (!containerExiste)
+                  this.meuRelogio.addSeconds(cont.getTempoTroca());
+
+               while (qtdProdutos > 0) {
+                  int quantidade = cont.getQtdAtualProdutos();
+                  int restanteContainer = cont.consumirProdutos(qtdProdutos);
+                  qtdProdutos -= quantidade - restanteContainer;
+                  if (restanteContainer == 0) {
                      cont.reabastecer();
                      this.meuRelogio.addSeconds(cont.getTempoTroca());
                   }
-               } else {
-                  this.meuRelogio.addSeconds(cont.getTempoTroca());
                }
 
-               cont.consumirProdutos(qtdProdutos);
             mutex.release();
 
          } catch (InterruptedException ie) {
