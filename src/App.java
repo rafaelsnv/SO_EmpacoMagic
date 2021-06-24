@@ -16,15 +16,15 @@ public class App {
       SyncFila filaPedidos = readPedidos.getFilaPedidos();
       int numOp = filaPedidos.size();
 
-      Esteira esteira_1 = new Esteira(1, filaPedidos, relatorio, containeres, mutex, numOp/2);
-      Esteira esteira_2 = new Esteira(2, filaPedidos, relatorio, containeres, mutex, numOp - numOp/2);
+      Esteira esteira_1 = new Esteira(1, filaPedidos, relatorio, containeres, mutex, numOp);
+//      Esteira esteira_2 = new Esteira(2, filaPedidos, relatorio, containeres, mutex, numOp - numOp/2);
 
       try {
          esteira_1.start();
-         esteira_2.start();
+//         esteira_2.start();
 
          esteira_1.join();
-         esteira_2.join();
+//         esteira_2.join();
       } catch (InterruptedException ignored) {}
 
       System.out.println("\nEmpacotamento concluído com sucesso! \n");
